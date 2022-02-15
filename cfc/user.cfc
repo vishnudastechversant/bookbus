@@ -3,7 +3,7 @@
         <cfargument  name="userId" default="0">
         <cfargument  name="emailId" default="">
 
-        <cfquery datasource="BusTicketReservation" name="userDetails" result="userDetails">
+        <cfquery datasource="busbooking" name="userDetails" result="userDetails">
             SELECT * FROM users Where 
             userId = <cfqueryparam value="#arguments.userId#" cfSqlType="CF_SQL_INTEGER">
             OR
@@ -21,7 +21,7 @@
         <cfargument  name="role">
         <cfargument  name="password">
 
-        <cfquery datasource="BusTicketReservation" name="addUser" result="addUserResult">
+        <cfquery datasource="busbooking" name="addUser" result="addUserResult">
             INSERT INTO users (fullName, userName, password, emailId, phoneNumber, RoleId)
             Values
             (<cfqueryparam value="#arguments.name#" cfSqlType="CF_SQL_NVARCHAR">,
@@ -38,7 +38,7 @@
     <cffunction  name="loginCheck" access="private">
         <cfargument  name="emailId" required="true">
 
-        <cfquery datasource="BusTicketReservation" name="loginCheck" result="loginCheckResult">
+        <cfquery datasource="busbooking" name="loginCheck" result="loginCheckResult">
             SELECT * FROM users where emailId = <cfqueryparam value="#arguments.emailId#" cfSqlType="CF_SQL_NVARCHAR">
         </cfquery>
 
@@ -49,7 +49,7 @@
         <cfargument  name="userName" required="true">
         <cfargument  name="password" required="true">
         
-        <cfquery datasource="BusTicketReservation" name="login" result="loginResult">
+        <cfquery datasource="busbooking" name="login" result="loginResult">
             SELECT * FROM users WHERE UserName = <cfqueryparam value="#arguments.userName#" cfSqlType="CF_SQL_NVARCHAR">
             AND
             Password = <cfqueryparam value="#hash(arguments.password)#">
