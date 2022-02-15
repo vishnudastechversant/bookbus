@@ -26,7 +26,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="components/user.cfc?method=login" method="post">
+                    <form action="cfc/user.cfc?method=login" method="post">
                         <div class="form-div">
                             <label>User Name</label>
                             <input type="text" class="form-input" name="userName" placeholder="Enter your User Name" required>
@@ -42,7 +42,7 @@
                         <a href="javascript:void(0);" onclick="FbLogin();" id="fbLink">
                             <button class="social-btn fb">f</button>
                         </a>
-                        <a href="components/user.cfc?method=googleLogin">
+                        <a href="cfc/user.cfc?method=googleLogin">
                             <button class="social-btn google">G</button>
                         </a>
                     </div>
@@ -59,7 +59,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="components/user.cfc?method=register" method="post">
+                    <form action="cfc/user.cfc?method=register" method="post">
                         <input type="text" class="form-input" name="name" placeholder="Enter your name" required>
                         <input type="text" class="form-input" name="userName" placeholder="Enter your user name" required>
                         <input type="text" class="form-input" name="emailId" placeholder="Enter your emailid" required>

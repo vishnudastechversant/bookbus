@@ -47,7 +47,7 @@
                             <i class="fa fa-user"></i> #session.name#
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="components/user.cfc?method=logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="cfc/user.cfc?method=logout">Logout</a></li>
                         </ul>
                     </div>
                 </cfoutput>
