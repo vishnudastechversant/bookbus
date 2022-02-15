@@ -21,14 +21,16 @@
             <form class="search-form" action="" method="post">
                 <div class="form-div">
                     <label>Pick-Up From</label>
-                    <input type="text" class="form-input" name="from" placeholder="where are you from" required>
+                    <input type="text" class="form-input" name="from" placeholder="where are you from" required onkeyup="handleLocation(this.value,'from')">
+                    <span id="loc-list"> </span> 
                 </div>
                 <div class="exchange">
                     <i class="fa fa-exchange"></i>
                 </div>
                 <div class="form-div">
                     <label>Drop To</label>
-                    <input type="text" class="form-input" name="to" placeholder="select your destination" required>
+                    <input type="text" class="form-input" name="to" placeholder="select your destination" required onkeyup="handleLocation(this.value,'to')">
+                    <span id="loc-list-to"> </span>
                 </div>
                 <div class="form-div">
                     <label>Date</label>
@@ -60,3 +62,42 @@
     </div>  
 </body>
 </html>
+
+<!--- To handle location list
+<script>
+    function handleLocation(loc,sec){
+    $.ajax({
+        type: "GET",
+        dataType: "html",
+        url: "cfc/search.cfc?method=locFunction",
+        data: {loc:loc,sec:sec},
+            success:function(res){
+                if(sec === "from"){
+                    $('#loc-list').html(res);
+                }
+                else{
+                    $('#loc-list-to').html(res);
+                }
+            
+            }
+        });
+    }
+</script>
+--->
+<script>
+function handleLocation(loc,sec){
+    var url    = "cfc/search.cfc";
+    var params = "method=locFunction&loc="+loc+"&sec="+sec;
+    var xhr    = new XMLHttpRequest();
+    xhr.open("get",url+"?"+params);
+    xhr.send();
+    xhr.onreadystatechange = function(){
+        if(sec === "from"){
+            document.getElementById("loc-list").innerHTML = this.responseText;
+        }
+        else{
+           document.getElementById("loc-list-to").innerHTML = this.responseText; 
+        }
+    }
+}
+</script>
