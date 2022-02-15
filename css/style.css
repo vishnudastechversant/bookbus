@@ -1,0 +1,99 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a{
+    text-decoration: none !important;
+}
+
+.nav{
+    background-color: #d84f57;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    padding: 10px;
+}
+
+.logo{
+    margin: 0 10px;
+    border-top: 3px solid;
+    height: 60px;
+    width: 60px;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 10px 2px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo p{
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    font-family: cursive;
+}
+
+.logo-img{
+    width: 60px;
+}
+
+.search-form{
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.form-div{
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+}
+
+.form-input{
+    outline: none;
+    border: none;
+    width: 200px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.search-btn, .exchange{
+    margin-top: 22px;
+    font-size: 20px !important;
+    color: #fff !important  ;
+    cursor: pointer;
+}
+
+.search-btn:hover{
+    color: #fff;
+}
+
+.user-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-details a{
+    color: #fff !important;
+    margin: 0 10px;
+}
+
+.user-details a:hover{
+    font-weight: bold;
+    background: transparent;
+}
+
+.dropdown-menu{
+    background-color: #dc3545 !important;
+}
+
+.drpbtn{
+    background-color: #d84f57 !important;
+    border: none !important;
+}
