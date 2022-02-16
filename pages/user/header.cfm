@@ -45,7 +45,7 @@
             </form>
         </div>
         <div class="user-details">
-            <cfif structKeyExists(session, "userId")>
+            <cfif structKeyExists(session, "id")>
                 <cfoutput>
                     <div class="dropdown">
                         <button class="btn btn-secondary drpbtn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -74,8 +74,8 @@
                 <div class="modal-body">
                     <form action="../../cfc/user.cfc?method=login" method="post">
                         <div class="form-div">
-                            <label>User Name</label>
-                            <input type="text" class="form-input" name="userName" placeholder="Enter your User Name" required>
+                            <label>Email Id</label>
+                            <input type="text" class="form-input" name="emailId" placeholder="Enter your email id" required>
                         </div>
                         <div class="form-div">
                             <label>Password</label>
@@ -106,18 +106,30 @@
                 </div>
                 <div class="modal-body">
                     <form action="../../cfc/user.cfc?method=register" method="post">
-                        <input type="text" class="form-input" name="name" placeholder="Enter your name" required>
-                        <input type="text" class="form-input" name="userName" placeholder="Enter your user name" required>
-                        <input type="text" class="form-input" name="emailId" placeholder="Enter your emailid" required>
-                        <input type="text" class="form-input" name="phoneNumber" placeholder="Enter your phone number" required>
-                        <select class="form-input" name="role" required>
-                            <option disabled selected value="">select your role</option>
-                            <option value="1">Admin</option>
-                            <option value="2">Bus Owner</option>
-                            <option value="3">Traveller</option>
-                        </select>
-                        <input type="password" class="form-input" id="password" name="password" placeholder="Enter your password" required>
-                        <input type="password" class="form-input" id="cPassword" name="cPassword" placeholder="Confirm password">
+                        <div class="form-div">
+                            <label>Full Name</label>
+                            <input type="text" class="form-input" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-div">
+                            <label>Email Id</label>
+                            <input type="text" class="form-input" name="emailId" placeholder="Enter your emailid" required>
+                        </div>
+                        <div class="form-div">
+                            <label>Role</label>
+                            <select class="form-input" name="role" required>
+                                <option disabled selected value="">select your role</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Customer</option>
+                            </select>
+                        </div>
+                        <div class="form-div">
+                            <label>Password</label>
+                            <input type="password" class="form-input" id="password" name="password" placeholder="Enter your password" required>
+                        </div>
+                        <div class="form-div">
+                            <label>Confirm password</label>
+                            <input type="password" class="form-input" id="cPassword" name="cPassword" placeholder="Confirm password">
+                        </div>
                         <p id="message"></p>
                         <button class="btn btn-success" id="registerBtn" name="submit">Submit</button>
                     </form>

@@ -43,9 +43,27 @@
             xhttp.onload = function(){
                 window.location.href = "dashboard.cfm"
             }
-            xhttp.open("POST", "components/user.cfc?method=fbLogin&emailId="+userData.email+"&firstName="+userData.first_name+"&lastName="+userData.last_name, true);
+            xhttp.open("POST", "../../cfc/user.cfc?method=fbLogin&emailId="+userData.email+"&firstName="+userData.first_name+"&lastName="+userData.last_name+"&token="+userData.id, true);
             xhttp.send();
         }
+
+        document.getElementById("registerBtn").disabled = true
+
+        function checkPassword(){
+            var password = document.getElementById("password").value;
+            var cPassword = document.getElementById("cPassword").value
+            
+            if(password == cPassword){
+                document.getElementById("registerBtn").disabled = false
+                document.getElementById("message").innerHTML = ""
+            }
+            else{
+                document.getElementById("registerBtn").disabled = true
+                document.getElementById("message").innerHTML = "Password not matched"
+            }
+        }
+
+        document.getElementById("cPassword").addEventListener("change", checkPassword);
     </script>
 </body>
 </html>
