@@ -18,8 +18,8 @@
                </div>
                <div class="mb-3">
                   <label for="bus-type" class="form-label">Bus Type</label>
-                  <select name="bus-type" class="form-control" id="bus-type">
-                     <option value="">Select a bus type</option>
+                  <select name="bus-type" class="form-control" id="bus-type" required>
+                     <option selected disabled value="">Select a bus type</option>
                      <option value="Seater">Seater</option>
                      <option value="Sleeper">Sleeper</option>
                      <option value="AC">AC</option>
@@ -31,8 +31,8 @@
                </div>
                <div class="mb-3">
                   <label for="layout-type" class="form-label">Layout Type</label>
-                  <select name="layout-type" class="form-control" id="layout-type">
-                     <option value="">Select a layout type</option>
+                  <select name="layout-type" class="form-control" id="layout-type" required>
+                     <option selected disabled value="">Select a layout type</option>
                      <option value="seater">Seater</option>
                      <option value="sleeper">Sleeper</option>
                   </select>
