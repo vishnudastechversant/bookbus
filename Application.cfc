@@ -7,7 +7,7 @@ component {
     this.ormEnabled = true;
     this.ormSettings = { logsql : true };
 
-   function onRequestStart(requestname){ 
+    function onRequestStart(requestname){ 
 
     }
 
