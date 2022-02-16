@@ -3,7 +3,7 @@
         <cfargument  name="userId" default="0">
         <cfargument  name="emailId" default="">
 
-        <cfquery datasource="BusTicketReservation" name="userDetails" result="userDetails">
+        <cfquery datasource="busbooking" name="userDetails" result="userDetails">
             SELECT * FROM users Where 
             userId = <cfqueryparam value="#arguments.userId#" cfSqlType="CF_SQL_INTEGER">
             OR
@@ -21,7 +21,7 @@
         <cfargument  name="role">
         <cfargument  name="password">
 
-        <cfquery datasource="BusTicketReservation" name="addUser" result="addUserResult">
+        <cfquery datasource="busbooking" name="addUser" result="addUserResult">
             INSERT INTO users (fullName, userName, password, emailId, phoneNumber, RoleId)
             Values
             (<cfqueryparam value="#arguments.name#" cfSqlType="CF_SQL_NVARCHAR">,
@@ -38,7 +38,7 @@
     <cffunction  name="loginCheck" access="private">
         <cfargument  name="emailId" required="true">
 
-        <cfquery datasource="BusTicketReservation" name="loginCheck" result="loginCheckResult">
+        <cfquery datasource="busbooking" name="loginCheck" result="loginCheckResult">
             SELECT * FROM users where emailId = <cfqueryparam value="#arguments.emailId#" cfSqlType="CF_SQL_NVARCHAR">
         </cfquery>
 
@@ -49,7 +49,7 @@
         <cfargument  name="userName" required="true">
         <cfargument  name="password" required="true">
         
-        <cfquery datasource="BusTicketReservation" name="login" result="loginResult">
+        <cfquery datasource="busbooking" name="login" result="loginResult">
             SELECT * FROM users WHERE UserName = <cfqueryparam value="#arguments.userName#" cfSqlType="CF_SQL_NVARCHAR">
             AND
             Password = <cfqueryparam value="#hash(arguments.password)#">
@@ -59,12 +59,12 @@
         <cfif recordCount eq 0>
             <script>
                 alert('Invalid username or password');
-                window.location.href='../login.cfm';
+                window.location.href='../pages/user/index.cfm';
             </script>
         <cfelse>
             <cfset session.userId = login.userId>
             <cfset session.name = login.fullName>
-            <cflocation  url="../dashBoard.cfm" addToken="false">
+            <cflocation  url="../pages/user/dashBoard.cfm" addToken="false">
         </cfif>
     </cffunction>
 
@@ -72,7 +72,7 @@
         <cfset structDelete(session, "userId")>
         <cfset structDelete(session, "name")>    
 
-        <cflocation  url="../index.cfm" addtoken="no">
+        <cflocation  url="../pages/user/index.cfm" addtoken="no">
     </cffunction>
 
     <cffunction  name="register" access="remote">
@@ -88,11 +88,11 @@
             <cfset userId = addUser(arguments.name, arguments.userName, arguments.emailId, arguments.phoneNumber, arguments.role, arguments.password)>
             <cfset session.name = arguments.name>
             <cfset session.userId = userId> 
-            <cflocation  url="../dashboard.cfm" addToken="false">
+            <cflocation  url="../pages/user/dashboard.cfm" addToken="false">
         <cfelse>
             <script>
                 alert('User already exist please login');
-                window.location.href='../login.cfm';
+                window.location.href='../pages/user/index.cfm';
             </script>  
         </cfif>
     </cffunction>
@@ -115,14 +115,14 @@
                 <cfset session.name = "#googleLoginResult.other.given_name#">
                 <cfset session.userId = "#userId#"> 
                 <cfset var loggedIn = true>
-                <cflocation  url="../userDetails.cfm" addToken="no">
+                <cflocation  url="../pages/user/dashBoard.cfm" addToken="no">
             <cfelse>
                 <cfset getUser = getUser(emailId = googleLoginResult.other.email)>
 
                 <cfset session.name = getUser.FullName>
                 <cfset session.userId = getUser.UserId>
                 <cfset var loggedIn = true>
-                <cflocation  url="../dashboard.cfm" addToken="no">
+                <cflocation  url="../pages/user/dashboard.cfm" addToken="no">
             </cfif>            
     </cffunction>
 
