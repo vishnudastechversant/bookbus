@@ -21,20 +21,25 @@
             <form class="search-form" action="" method="post">
                 <div class="form-div">
                     <label>Pick-Up From</label>
-                    <input type="text" class="form-input" name="from" placeholder="where are you from" required>
+                    <input type="text" class="form-input" name="from" id="from" placeholder="where are you from" onkeyup="handleLocation(this.value,'from')" required>
+                    <input type="hidden" name="loc_id_from" id="loc_id_from" value=""/>
+                    <span id="loc-list"> </span>
                 </div>
                 <div class="exchange">
-                    <i class="fa fa-exchange"></i>
+                    <i class="fa fa-exchange" onclick="handleToggle()"></i>
                 </div>
                 <div class="form-div">
                     <label>Drop To</label>
-                    <input type="text" class="form-input" name="to" placeholder="select your destination" required>
+                    <input type="text" class="form-input" name="to" id="to" placeholder="select your destination" onkeyup="handleLocation(this.value,'to')" required>
+                    <input type="hidden" name="loc_id_to" id="loc_id_to" value=""/>
+                    <span id="loc-list-to"> </span>
                 </div>
                 <div class="form-div">
                     <label>Date</label>
-                    <input type="date" class="form-input" name="date" required>
+                    <input type="date" class="form-input" name="date" id="date" required>
+                    <span id="jrn-date"> </span>
                 </div>
-                <button class="btn search-btn">
+                <button class="btn search-btn" onclick="handleSearch(event)">
                     <i class="fa fa-search"></i>
                 </button>
             </form>
@@ -120,3 +125,86 @@
             </div>
         </div>
     </div>
+
+    <script>
+function handleLocation(loc,sec){
+    var url    = "../../cfc/search.cfc";
+    var params = "method=locFunction&loc="+loc+"&sec="+sec;
+    var xhr    = new XMLHttpRequest();
+    xhr.open("get",url+"?"+params);
+    xhr.send();
+    xhr.onreadystatechange = function(){
+        if(sec === "from"){
+            document.getElementById("loc-list").innerHTML = this.responseText;
+        }
+        else{
+           document.getElementById("loc-list-to").innerHTML = this.responseText; 
+        }
+    }
+}
+</script>
+
+<!--- To handle select location--->
+<script>
+function listHandle(id,name,sec) {
+  if(sec ==="from"){
+    document.getElementById("from").value = name;
+    document.getElementById("loc_id_from").value = id;
+    document.getElementById("loc-list").innerHTML = "";
+  }
+  else{
+    document.getElementById("to").value = name;
+    document.getElementById("loc_id_to").value = id;
+    document.getElementById("loc-list-to").innerHTML = "";
+  }
+
+}
+</script>
+
+<!--- To handle search button click --->
+<script>
+function handleSearch(event){
+    <!--- for validation --->
+    var locfrom = document.getElementById("from").value;
+    var locto   = document.getElementById("to").value;
+    var jdate   = document.getElementById("date").value;
+    if(locfrom ==""){
+        event.preventDefault();  
+        document.getElementById('loc-list').innerHTML = "please select origin location"; 
+    }
+    if(locto ==""){
+        event.preventDefault(); 
+        document.getElementById('loc-list-to').innerHTML = "please select destination location"; 
+    }
+    if(jdate ===""){
+        event.preventDefault(); 
+        document.getElementById('jrn-date').innerHTML = "please select date"; 
+    }
+    else{
+        event.preventDefault(); 
+        document.getElementById('jrn-date').innerHTML = "";
+    }
+    if((locfrom !=="") && (!locto !=="")){
+        if(locfrom == locto){
+            event.preventDefault(); 
+            document.getElementById('loc-list-to').innerHTML = "Origin and Destination location cannot be the same"; 
+        }
+    }
+}
+</script>
+<script>
+function handleToggle(){
+    var locfrom = document.getElementById("from").value;
+    var locto   = document.getElementById("to").value;
+    var from_id = document.getElementById("loc_id_from").value;
+    var to_id   = document.getElementById("loc_id_to").value;
+
+    if((locfrom !=="")&&(locto !=="")){
+        document.getElementById("to").value          = locfrom;
+        document.getElementById("from").value        = locto;
+        document.getElementById("loc_id_from").value = to_id;
+        document.getElementById("loc_id_to").value   = from_id;
+    }
+}
+</script>
+
