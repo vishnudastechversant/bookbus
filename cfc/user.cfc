@@ -59,12 +59,12 @@
         <cfif recordCount eq 0>
             <script>
                 alert('Invalid username or password');
-                window.location.href='../login.cfm';
+                window.location.href='../pages/user/index.cfm';
             </script>
         <cfelse>
             <cfset session.userId = login.userId>
             <cfset session.name = login.fullName>
-            <cflocation  url="../dashBoard.cfm" addToken="false">
+            <cflocation  url="../pages/user/dashBoard.cfm" addToken="false">
         </cfif>
     </cffunction>
 
@@ -72,7 +72,7 @@
         <cfset structDelete(session, "userId")>
         <cfset structDelete(session, "name")>    
 
-        <cflocation  url="../index.cfm" addtoken="no">
+        <cflocation  url="../pages/user/index.cfm" addtoken="no">
     </cffunction>
 
     <cffunction  name="register" access="remote">
@@ -88,11 +88,11 @@
             <cfset userId = addUser(arguments.name, arguments.userName, arguments.emailId, arguments.phoneNumber, arguments.role, arguments.password)>
             <cfset session.name = arguments.name>
             <cfset session.userId = userId> 
-            <cflocation  url="../dashboard.cfm" addToken="false">
+            <cflocation  url="../pages/user/dashboard.cfm" addToken="false">
         <cfelse>
             <script>
                 alert('User already exist please login');
-                window.location.href='../login.cfm';
+                window.location.href='../pages/user/index.cfm';
             </script>  
         </cfif>
     </cffunction>
@@ -115,14 +115,14 @@
                 <cfset session.name = "#googleLoginResult.other.given_name#">
                 <cfset session.userId = "#userId#"> 
                 <cfset var loggedIn = true>
-                <cflocation  url="../userDetails.cfm" addToken="no">
+                <cflocation  url="../pages/user/dashBoard.cfm" addToken="no">
             <cfelse>
                 <cfset getUser = getUser(emailId = googleLoginResult.other.email)>
 
                 <cfset session.name = getUser.FullName>
                 <cfset session.userId = getUser.UserId>
                 <cfset var loggedIn = true>
-                <cflocation  url="../dashboard.cfm" addToken="no">
+                <cflocation  url="../pages/user/dashboard.cfm" addToken="no">
             </cfif>            
     </cffunction>
 
