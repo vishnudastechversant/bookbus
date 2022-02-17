@@ -3,12 +3,22 @@
 <table class="table table-borderless bus">
     <tbody>
         <tr>
-            <td></td>
-            <td></td>
+            <td colspan="6"></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
             <td><img src="../../assets/user/img/blank.png" alt="blank" height="50" width="50"></td>
+            <td colspan="2"></td>
+            <td><img src="../../assets/user/img/chair-taken.png" alt="drivers" height="76" width="76"></td>
+        </tr>
+        <tr>
             <td></td>
-            <td></td>
-            <td></td>
+            <td colspan="5"><hr></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td><img src="../../assets/user/img/blank.png" alt="blank" height="50" width="50"></td>
+            <td colspan="3"></td>
         </tr>
         <cfloop index="seat_number" from="1" to="#total_seats#" step="5">
             <cfoutput>

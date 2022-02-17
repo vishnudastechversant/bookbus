@@ -112,6 +112,9 @@ a{
 
 }
 .bus{
-    margin: 15px 10px;
+    margin: 7%;
     border: solid 3px black ;
+}
+.fair-card{
+    margin-top: 15%;
 }
