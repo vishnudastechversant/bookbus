@@ -82,6 +82,9 @@
                            <span class="nav-link-text">Sample Form</span>
                         </a>
                      </li>
+
+                     <!--Bus section menus-->
+
                      <cfif FindNoCase('addnewbus.cfm', cgi.script_name)>
                            <cfset parentbusexpanded   = 'true'   />
                            <cfset parentbusshow       = 'show'   />
@@ -132,6 +135,8 @@
                            </ul>
                         </div>
                      </li>
+
+                     <!--EOD-->
                   </ul>
                </nav>
                <div class="app-sidepanel-footer">
