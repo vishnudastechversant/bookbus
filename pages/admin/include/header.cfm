@@ -93,6 +93,17 @@
                            <cfset parentbusactive     = '' />
                            <cfset newbusactive        = '' />
                      </cfif>
+                     <cfif FindNoCase('listbus.cfm', cgi.script_name)>
+                           <cfset parentbusexpanded   = 'true'   />
+                           <cfset parentbusshow       = 'show'   />
+                           <cfset parentbusactive     = 'active' />
+                           <cfset listbusactive        = 'active' />
+                        <cfelse>
+                           <cfset parentbusexpanded   = 'false' />
+                           <cfset parentbusshow       = '' />
+                           <cfset parentbusactive     = '' />
+                           <cfset listbusactive       = '' />
+                     </cfif>
                      <li class="nav-item has-submenu">
                         <a class="nav-link submenu-toggle <cfoutput>#parentbusactive#</cfoutput>" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="<cfoutput>#parentbusexpanded#</cfoutput>" aria-controls="submenu-1">
                            <span class="nav-icon">
@@ -110,7 +121,9 @@
                         </a>
                         <div id="submenu-1" class="collapse submenu submenu-1 <cfoutput>#parentbusshow#</cfoutput>" data-bs-parent="#menu-accordion">
                            <ul class="submenu-list list-unstyled">
-                              <li class="submenu-item"><a class="submenu-link" href="notifications.html">List All Bus</a></li>
+                              <li class="submenu-item">
+                                 <a class="submenu-link <cfoutput>#listbusactive#</cfoutput>" href="listbus.cfm">List All Bus</a>
+                              </li>
                               <li class="submenu-item">
                                  <a class="submenu-link  <cfoutput>#newbusactive#</cfoutput>" href="addnewbus.cfm">
                                     Add New Bus
