@@ -149,13 +149,19 @@
             xhr.send();
             xhr.onreadystatechange = function(){
                 if(sec === "from"){
-                    if(document.getElementById("from").value != ""){
+                    if(document.getElementById("from").value !== ""){
                         document.getElementById("loc-list").innerHTML = this.responseText;
+                    }
+                    else{
+                        document.getElementById("loc-list").innerHTML = "";
                     }
                 }
                 else{
-                    if(document.getElementById("to").value != ""){
+                    if(document.getElementById("to").value !== ""){
                         document.getElementById("loc-list-to").innerHTML = this.responseText; 
+                    }
+                    else{
+                        document.getElementById("loc-list-to").innerHTML = "";
                     }
                 }
             }
@@ -210,6 +216,8 @@
             }
         }
     </script>
+
+    <!--- To handle toggle button click --->
     <script>
         function handleToggle(){
             var locfrom = document.getElementById("from").value;
