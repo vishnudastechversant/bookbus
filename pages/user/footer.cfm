@@ -142,6 +142,8 @@
             }
         }
     </script>
+
+    <!--- To handle toggle button click --->
     <script>
         function handleToggle(){
             var locfrom = document.getElementById("from").value;
