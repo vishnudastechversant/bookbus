@@ -113,10 +113,12 @@ a{
 }
 
 .bus{
-    margin: 15px 10px;
+    margin: 7%;
     border: solid 3px black ;
 }
-
+.fair-card{
+    margin-top: 15%;
+}
 #loc-list, #loc-list-to{
     height: 10px;
     z-index: 1;
