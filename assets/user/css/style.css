@@ -97,3 +97,31 @@ a{
     background-color: #d84f57 !important;
     border: none !important;
 }
+.seat{
+    cursor: pointer;
+}
+.seat-taken{
+    cursor: default;
+}
+.seat>span>img{
+    width: 69px;
+    height: 69px;
+}
+.seat>input{
+    display: none;
+
+}
+
+.bus{
+    margin: 15px 10px;
+    border: solid 3px black ;
+}
+
+#loc-list, #loc-list-to{
+    height: 10px;
+    z-index: 1;
+}
+
+.list-group-item{
+    cursor: pointer;
+}

@@ -1,148 +1,152 @@
-<cfcomponent>
-    <cffunction  name="getUser" access="private">
-        <cfargument  name="userId" default="0">
-        <cfargument  name="emailId" default="">
+component {
 
-        <cfquery datasource="busbooking" name="userDetails" result="userDetails">
-            SELECT * FROM users Where 
-            userId = <cfqueryparam value="#arguments.userId#" cfSqlType="CF_SQL_INTEGER">
-            OR
-            emailId = <cfqueryparam value="#arguments.emailId#" cfSqlType="CF_SQL_NVARCHAR">
-        </cfquery>
+	private function getUser(id="0", emailId="") {
 
-        <cfreturn userDetails>
-    </cffunction>
-
-    <cffunction  name="addUser" access="private">
-        <cfargument  name="name">
-        <cfargument  name="userName">
-        <cfargument  name="emailId">
-        <cfargument  name="phoneNumber">
-        <cfargument  name="role">
-        <cfargument  name="password">
-
-        <cfquery datasource="busbooking" name="addUser" result="addUserResult">
-            INSERT INTO users (fullName, userName, password, emailId, phoneNumber, RoleId)
-            Values
-            (<cfqueryparam value="#arguments.name#" cfSqlType="CF_SQL_NVARCHAR">,
-            <cfqueryparam value="#arguments.userName#" cfSqlType="CF_SQL_NVARCHAR">,
-            <cfqueryparam value="#hash(arguments.password)#" cfSqlType="CF_SQL_NVARCHAR">,
-            <cfqueryparam value="#arguments.emailId#" cfSqlType="CF_SQL_NVARCHAR">,
-            <cfqueryparam value="#arguments.phoneNumber#" cfSqlType="CF_SQL_NVARCHAR">,
-            <cfqueryparam value="#arguments.role#" cfSqlType="CF_SQL_INTEGER">)
-        </cfquery>
-
-        <cfreturn addUserResult.generatedkey>
-    </cffunction>
-
-    <cffunction  name="loginCheck" access="private">
-        <cfargument  name="emailId" required="true">
-
-        <cfquery datasource="busbooking" name="loginCheck" result="loginCheckResult">
-            SELECT * FROM users where emailId = <cfqueryparam value="#arguments.emailId#" cfSqlType="CF_SQL_NVARCHAR">
-        </cfquery>
-
-        <cfreturn loginCheckResult.recordCount>
-    </cffunction>
-
-    <cffunction  name="login" access="remote">
-        <cfargument  name="userName" required="true">
-        <cfargument  name="password" required="true">
+		userDetails = queryExecute("SELECT * FROM br_user WHERE id = :id OR email = :emailId", {id=id, emailId=emailId});
         
-        <cfquery datasource="busbooking" name="login" result="loginResult">
-            SELECT * FROM users WHERE UserName = <cfqueryparam value="#arguments.userName#" cfSqlType="CF_SQL_NVARCHAR">
-            AND
-            Password = <cfqueryparam value="#hash(arguments.password)#">
-        </cfquery>
-        <cfset recordCount = loginResult.recordCount>
-        
-        <cfif recordCount eq 0>
-            <script>
+        return userDetails;
+	}
+
+    private function addUser(name, emailId="", password="", googleToken="", facebookToken="", loginType, role="2") {
+		
+        cfquery( name="addUser", result="addUserResult" ) { 
+
+			writeOutput("insert into br_user (fullname, email, password, google_token, facebook_token, login_type, user_role, created_on)
+            values
+            (");
+			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=name );
+
+			writeOutput(",");
+			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=emailId );
+
+			writeOutput(",");
+			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=hash(password) );
+
+			writeOutput(",");
+			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=googleToken );
+
+			writeOutput(",");
+			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=facebookToken );
+
+			writeOutput(",");
+			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=loginType );
+
+			writeOutput(",");
+			cfqueryparam( cfsqltype="CF_SQL_INTEGER", value=role );
+
+			writeOutput(",");
+			cfqueryparam( cfsqltype="CF_SQL_TIMESTAMP", value=now() );
+
+			writeOutput(")");
+		}
+		
+        return addUserResult.generatedkey;
+	}
+
+    private function loginCheck(required emailId) {
+		
+        cfquery( name="loginCheck", result="loginCheckResult" ) {
+
+			writeOutput("SELECT * FROM br_user where email =");
+			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=emailId );
+		}
+		
+        return loginCheckResult.recordCount;
+	}
+
+    remote function login(required emailId, required password) {
+		
+        cfquery( name="login", result="loginResult" ) { 
+
+			writeOutput("SELECT * FROM br_user WHERE email =");
+			cfqueryparam( cfSqlType="CF_SQL_NVARCHAR", value=emailId );
+
+			writeOutput("AND
+            Password =");
+			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=hash(password) );
+		}
+
+		recordCount = loginResult.recordCount;
+
+		if ( recordCount == 0 ) {
+
+			writeOutput("<script>
                 alert('Invalid username or password');
                 window.location.href='../pages/user/index.cfm';
-            </script>
-        <cfelse>
-            <cfset session.userId = login.userId>
-            <cfset session.name = login.fullName>
-            <cflocation  url="../pages/user/dashBoard.cfm" addToken="false">
-        </cfif>
-    </cffunction>
+            </script>");
+		} else {
+			session.id = login.id;
+			session.name = login.fullName;
+			location( "../pages/user/dashBoard.cfm", false );
+		}
+	}
 
-    <cffunction  name="logout" access="remote">
-        <cfset structDelete(session, "userId")>
-        <cfset structDelete(session, "name")>    
+    remote function logout() {
+		structDelete(session, "id");
+		structDelete(session, "name");
+		location( "../pages/user/index.cfm", false );
+	}
 
-        <cflocation  url="../pages/user/index.cfm" addtoken="no">
-    </cffunction>
+    remote function register(required name, required emailId, required password, role) {
+		
+        recordCount = loginCheck(emailId);
+		
+        if ( recordCount == 0 ) {
+			id = addUser(name = name, emailId = emailId, password = password, loginType = "web", role = role);
+			session.name = name;
+			session.id = id;
+			location( "../pages/user/dashboard.cfm", false );
+		} else {
 
-    <cffunction  name="register" access="remote">
-        <cfargument  name="name" required="true">
-        <cfargument  name="userName" required="true">
-        <cfargument  name="emailId" required="true">
-        <cfargument  name="phoneNumber" required="true">
-        <cfargument  name="role">
-        <cfargument  name="password" required="true">
-
-        <cfset recordCount = loginCheck(arguments.emailId)>
-        <cfif recordCount eq 0>
-            <cfset userId = addUser(arguments.name, arguments.userName, arguments.emailId, arguments.phoneNumber, arguments.role, arguments.password)>
-            <cfset session.name = arguments.name>
-            <cfset session.userId = userId> 
-            <cflocation  url="../pages/user/dashboard.cfm" addToken="false">
-        <cfelse>
-            <script>
+			writeOutput("<script>
                 alert('User already exist please login');
                 window.location.href='../pages/user/index.cfm';
-            </script>  
-        </cfif>
-    </cffunction>
+            </script>");
+		}
+	}
 
-    <cffunction name="googleLogin" access="remote">
-        <cfset var loggedIn = false>
-        <cfoauth
-            Type="Google"
-            clientid="856324982681-nd2gqlm9vqlildtenbahlbs7gpmr2i6i.apps.googleusercontent.com" 
-            scope="https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile"
-            secretkey="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" 
-            result="googleLoginResult"  
-            redirecturi="http://127.0.0.1:8500/BusTicketReservation/components/user.cfc?method=googleLogin">
+    remote function googleLogin() {
+		var loggedIn = false;
+
+        cfoauth(
+	        Type="Google",  
+            clientid="856324982681-nd2gqlm9vqlildtenbahlbs7gpmr2i6i.apps.googleusercontent.com",  
+            scope="https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile",  
+            secretkey="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",  
+            result="googleLoginResult",  
+            redirecturi="http://localhost:8500/bookbus/cfc/user.cfc?method=googleLogin");
             
-            <cfset recordCount = loginCheck(googleLoginResult.other.email)>
-            
-            <cfif recordCount eq 0>
-                <cfset userId = addUser(googleLoginResult.other.given_name, googleLoginResult.other.given_name, googleLoginResult.other.email)>
-                
-                <cfset session.name = "#googleLoginResult.other.given_name#">
-                <cfset session.userId = "#userId#"> 
-                <cfset var loggedIn = true>
-                <cflocation  url="../pages/user/dashBoard.cfm" addToken="no">
-            <cfelse>
-                <cfset getUser = getUser(emailId = googleLoginResult.other.email)>
+		recordCount = loginCheck(googleLoginResult.other.email);
 
-                <cfset session.name = getUser.FullName>
-                <cfset session.userId = getUser.UserId>
-                <cfset var loggedIn = true>
-                <cflocation  url="../pages/user/dashboard.cfm" addToken="no">
-            </cfif>            
-    </cffunction>
+        if ( recordCount == 0 ) {
+			id = addUser(name = googleLoginResult.other.given_name, emailId = googleLoginResult.other.email, googlToken = googleLoginResult.access_token , loginType = "google");
+			session.name = "#googleLoginResult.other.given_name#";
+			session.id = id;
+			var loggedIn = true;
+			location( "../pages/user/dashBoard.cfm", false );
+		} else {
+			getUser = getUser(emailId = googleLoginResult.other.email);
+			session.name = getUser.FullName;
+			session.id = getUser.id;
+			var loggedIn = true;
+			location( "../pages/user/dashboard.cfm", false );
+		}
+	}
 
-    <cffunction name="fbLogin" access="remote" returnformat='plain' returntype='any' output='true'>
-        <cfargument name="emailId">
-		<cfargument name="firstName">
-		<cfargument name="lastName">
-
-        <cfset FullName = "#firstName# #lastName#">
-
-        <cfset recordCount = loginCheck(arguments.emailId)>
-
-        <cfif recordCount eq 0>
-            <cfset userId = addUser(FullName, arguments.firstName, arguments.emailId)>
-            <cfset session.name = FullName>
-            <cfset session.userId = userId> 
-        <cfelse>
-            <cfset getUser = getUser(emailId = arguments.emailId)>
-            <cfset session.name = getUser.FullName>
-            <cfset session.userId = getUser.UserId>
-        </cfif>
-    </cffunction>
-</cfcomponent>
+    remote any function fbLogin(emailId, firstName, lastName, token) output=true returnFormat="plain" {
+		
+        FullName = "#firstName# #lastName#";
+		
+        recordCount = loginCheck(emailId);
+		
+        if ( recordCount == 0 ) {
+			id = addUser(name = FullName, emailId = emailId, facebookToken = token, loginType = "facebook");
+			session.name = FullName;
+			session.id = id;
+		} else {
+			getUser = getUser(emailId = emailId);
+			session.name = getUser.FullName;
+			session.id = getUser.id;
+		}
+	}
+}
