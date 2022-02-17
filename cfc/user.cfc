@@ -1,57 +1,40 @@
 component {
 
-	private function getUser(id="0", emailId="") {
+	private function getUser(id="0", emailId="", fbToken="") {
 
-		userDetails = queryExecute("SELECT * FROM br_user WHERE id = :id OR email = :emailId", {id=id, emailId=emailId});
+		userDetails = queryExecute("SELECT * FROM br_user WHERE id = :id OR email = :emailId OR facebook_token = :fbToken",
+		{id=id, emailId=emailId, fbToken=fbToken});
         
         return userDetails;
 	}
 
-    private function addUser(name, emailId="", password="", googleToken="", facebookToken="", loginType, role="2") {
-		
-        cfquery( name="addUser", result="addUserResult" ) { 
+    private function addUser(name, emailId, password="", googleToken="", fbToken="", loginType, role="2") {
 
-			writeOutput("insert into br_user (fullname, email, password, google_token, facebook_token, login_type, user_role, created_on)
-            values
-            (");
-			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=name );
+		data = structNew();
 
-			writeOutput(",");
-			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=emailId );
+		try{
+			addUser = queryExecute("INSERT INTO br_user (fullname, email, password, google_token, facebook_token, login_type, user_role)
+			VALUES
+			('#name#', '#emailId#', '#password#', '#googleToken#', '#fbToken#', '#loginType#', '#role#')",
+			{}, {result = "addUserResult"});	
 
-			writeOutput(",");
-			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=hash(password) );
-
-			writeOutput(",");
-			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=googleToken );
-
-			writeOutput(",");
-			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=facebookToken );
-
-			writeOutput(",");
-			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=loginType );
-
-			writeOutput(",");
-			cfqueryparam( cfsqltype="CF_SQL_INTEGER", value=role );
-
-			writeOutput(",");
-			cfqueryparam( cfsqltype="CF_SQL_TIMESTAMP", value=now() );
-
-			writeOutput(")");
+			data.status = "success";
+			data.text = addUserResult.generatedKey;
+		}
+		catch (any e){
+			data.status = "error";
+			data.text = e.message;
 		}
 		
-        return addUserResult.generatedkey;
+        return data;
 	}
 
-    private function loginCheck(required emailId) {
+    private function loginCheck(emailId="", fbToken="") {
 		
-        cfquery( name="loginCheck", result="loginCheckResult" ) {
-
-			writeOutput("SELECT * FROM br_user where email =");
-			cfqueryparam( cfsqltype="CF_SQL_NVARCHAR", value=emailId );
-		}
+		loginCheck = queryExecute("SELECT * FROM br_user WHERE email = :emailId OR facebook_token = :fbToken", 
+		{emailId=emailId, fbToken=fbToken});
 		
-        return loginCheckResult.recordCount;
+        return loginCheck.recordCount;
 	}
 
     remote function login(required emailId, required password) {
@@ -92,12 +75,11 @@ component {
         recordCount = loginCheck(emailId);
 		
         if ( recordCount == 0 ) {
-			id = addUser(name = name, emailId = emailId, password = password, loginType = "web", role = role);
+			id = addUser(name = name, emailId = emailId, password = hash(password), loginType = "web", role = role);
 			session.name = name;
-			session.id = id;
+			session.id = id.text;
 			location( "../pages/user/dashboard.cfm", false );
 		} else {
-
 			writeOutput("<script>
                 alert('User already exist please login');
                 window.location.href='../pages/user/index.cfm';
@@ -119,9 +101,9 @@ component {
 		recordCount = loginCheck(googleLoginResult.other.email);
 
         if ( recordCount == 0 ) {
-			id = addUser(name = googleLoginResult.other.given_name, emailId = googleLoginResult.other.email, googlToken = googleLoginResult.access_token , loginType = "google");
+			id = addUser(name = googleLoginResult.other.given_name, emailId = googleLoginResult.other.email, googleToken = googleLoginResult.id , loginType = "google");
 			session.name = "#googleLoginResult.other.given_name#";
-			session.id = id;
+			session.id = id.text;
 			var loggedIn = true;
 			location( "../pages/user/dashBoard.cfm", false );
 		} else {
@@ -137,14 +119,14 @@ component {
 		
         FullName = "#firstName# #lastName#";
 		
-        recordCount = loginCheck(emailId);
+        recordCount = loginCheck(emailId, token);
 		
         if ( recordCount == 0 ) {
-			id = addUser(name = FullName, emailId = emailId, facebookToken = token, loginType = "facebook");
+			id = addUser(name = FullName, emailId = emailId, fbToken = token, loginType = "facebook");
 			session.name = FullName;
-			session.id = id;
+			session.id = id.text;
 		} else {
-			getUser = getUser(emailId = emailId);
+			getUser = getUser(emailId=emailId, fbToken=token);
 			session.name = getUser.FullName;
 			session.id = getUser.id;
 		}
