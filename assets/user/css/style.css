@@ -11,7 +11,7 @@ a{
 
 .nav{
     background-color: #d84f57;
-    height: 85px;
+    height: 95px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -111,10 +111,23 @@ a{
     display: none;
 
 }
+
 .bus{
     margin: 7%;
     border: solid 3px black ;
 }
 .fair-card{
     margin-top: 15%;
+}
+#loc-list, #loc-list-to{
+    height: 10px;
+    z-index: 1;
+}
+
+.list-group-item{
+    cursor: pointer;
+}
+
+.error{
+    font-size: 10px;
 }

@@ -7,9 +7,7 @@ component {
  
        //return loclist;
         cfoutput(QUERY="loclist" ) {
-                writeOutput("<ul class=""list-group"">
-                <li class=""list-group-item"" onclick=""listHandle('#id#','#city#','#sec#')"">#city#</li>
-                </ul>"
+                writeOutput("<li class=""list-group-item"" onclick=""listHandle('#id#','#city#','#sec#')"">#city#</li>"
             );
         }
     }
