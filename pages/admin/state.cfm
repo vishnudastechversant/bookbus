@@ -33,7 +33,7 @@
 										<tbody>
                               <cfloop array="#allState#" index="row">
 											<tr>
-												<td class="cell">#15345</td>
+												<td class="cell">git15345</td>
 												<td class="cell">#row.State#</td>
 												<td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
 											</tr>
