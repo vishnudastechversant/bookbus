@@ -11,7 +11,7 @@ a{
 
 .nav{
     background-color: #d84f57;
-    height: 85px;
+    height: 95px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -124,4 +124,8 @@ a{
 
 .list-group-item{
     cursor: pointer;
+}
+
+.error{
+    font-size: 10px;
 }
