@@ -20,29 +20,29 @@
    </div>
    <cfset allState = entityLoad("state")>
    <div class="app-card app-card-orders-table mb-5">
-						    <div class="app-card-body">
-							    <div class="table-responsive">
-							        <table class="table mb-0 text-left">
-										<thead>
-											<tr>
-												<th class="cell">Sl</th>
-												<th class="cell">State Name</th>
-												<th class="cell"></th>
-											</tr>
-										</thead>
-										<tbody>
-                              <cfloop array="#allState#" index="row">
-											<tr>
-												<td class="cell">#15345</td>
-												<td class="cell">#row.State#</td>
-												<td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-											</tr>
-                              </cfloop>   
-										</tbody>
-									</table>
-						        </div>
-						    </div>
-						</div>
+    <div class="app-card-body">
+	    <div class="table-responsive">
+	        <table class="table mb-0 text-left">
+				<thead>
+					<tr>
+						<th class="cell">Sl</th>
+						<th class="cell">State Name</th>
+						<th class="cell"></th>
+					</tr>
+				</thead>
+				<tbody>
+            <cfloop array="#allState#" index="row">
+					<tr>
+						<td class="cell">#15345</td>
+						<td class="cell">#row.State#</td>
+						<td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
+					</tr>
+            </cfloop>   
+				</tbody>
+			</table>
+        </div>
+    </div>
+</div>
 </div>
 
 <cfinclude  template = "include/footer.cfm"  runOnce = "true">                    
