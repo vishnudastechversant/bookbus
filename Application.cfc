@@ -1,16 +1,16 @@
 component {
 
-    this.name = "Bus Booking";
-    this.datasource = "busbooking";
-    this.sessionManagement = true;
-    this.sessionTimeout = CreateTimeSpan(0, 0, 30, 0);
-    this.ormEnabled = true;
-    this.ormSettings = { logsql : true , datasource = "busbooking", cfclocation = ["entity"] };
+    this.name               = "Bus Booking";
+    this.datasource         = "busbooking";
+    this.sessionManagement  = true;
+    this.sessionTimeout     = CreateTimeSpan(0, 0, 30, 0);
+    this.ormEnabled         = true;
+    this.ormSettings        = { logsql : true, datasource = "busbooking", cfclocation = ["entity"] };
     this.invokeImplicitAccessor = true;
     this.mappings["/local"] = getDirectoryFromPath(getCurrentTemplatePath());
-
-   function onRequestStart(requestname){ 
-
+    
+    function onRequestStart(requestname){ 
+        ORMReload();
     }
 
     function onRequestStart(requestname){ 
