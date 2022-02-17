@@ -111,7 +111,17 @@ a{
     display: none;
 
 }
+
 .bus{
     margin: 15px 10px;
     border: solid 3px black ;
+}
+
+#loc-list, #loc-list-to{
+    height: 10px;
+    z-index: 1;
+}
+
+.list-group-item{
+    cursor: pointer;
 }
