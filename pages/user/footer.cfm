@@ -65,5 +65,97 @@
 
         document.getElementById("cPassword").addEventListener("change", checkPassword);
     </script>
+
+    <script>
+        function handleLocation(loc,sec){
+            var url    = "../../cfc/search.cfc";
+            var params = "method=locFunction&loc="+loc+"&sec="+sec;
+            var xhr    = new XMLHttpRequest();
+            xhr.open("get",url+"?"+params);
+            xhr.send();
+            xhr.onreadystatechange = function(){
+                if(sec === "from"){
+                    if(document.getElementById("from").value != ""){
+                        document.getElementById("loc-list").innerHTML = this.responseText;
+                    }
+                    else{
+                        document.getElementById("loc-list").innerHTML = "";
+                    }
+                }
+                else{
+                    if(document.getElementById("to").value != ""){
+                        document.getElementById("loc-list-to").innerHTML = this.responseText; 
+                    }
+                    else{
+                        document.getElementById("loc-list-to").innerHTML = "";
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!--- To handle select location--->
+    <script>
+        function listHandle(id,name,sec) {
+            if(sec ==="from"){
+                document.getElementById("from").value = name;
+                document.getElementById("loc_id_from").value = id;
+                document.getElementById("loc-list").innerHTML = "";
+            }
+            else{
+                document.getElementById("to").value = name;
+                document.getElementById("loc_id_to").value = id;
+                document.getElementById("loc-list-to").innerHTML = "";
+            }
+
+        }
+    </script>
+
+    <!--- To handle search button click --->
+    <script>
+        function handleSearch(event){
+            <!--- for validation --->
+            var locfrom = document.getElementById("from").value;
+            var locto   = document.getElementById("to").value;
+            var jdate   = document.getElementById("date").value;
+            if(locfrom ==""){
+                event.preventDefault();  
+                document.getElementById('from-error').innerHTML = "please select origin location"; 
+            }
+            if(locto ==""){
+                event.preventDefault(); 
+                document.getElementById('to-error').innerHTML = "please select destination location"; 
+            }
+            if(jdate ===""){
+                event.preventDefault(); 
+                document.getElementById('date-error').innerHTML = "please select date"; 
+            }
+            else{
+                event.preventDefault(); 
+                document.getElementById('jrn-date').innerHTML = "";
+            }
+            if((locfrom !=="") && (!locto !=="")){
+                if(locfrom == locto){
+                    event.preventDefault(); 
+                    document.getElementById('loc-list-to').innerHTML = "Origin and Destination location cannot be the same"; 
+                }
+            }
+        }
+    </script>
+    <script>
+        function handleToggle(){
+            var locfrom = document.getElementById("from").value;
+            var locto   = document.getElementById("to").value;
+            var from_id = document.getElementById("loc_id_from").value;
+            var to_id   = document.getElementById("loc_id_to").value;
+
+            if((locfrom !=="")&&(locto !=="")){
+                document.getElementById("to").value          = locfrom;
+                document.getElementById("from").value        = locto;
+                document.getElementById("loc_id_from").value = to_id;
+                document.getElementById("loc_id_to").value   = from_id;
+            }
+        }
+    </script>
 </body>
 </html>
