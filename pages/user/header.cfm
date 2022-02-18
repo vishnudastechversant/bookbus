@@ -146,12 +146,7 @@
     </div>
 
     <!--- for listing --->
-    <div class="buses">
-        <div class="bus-details">
-            <p id="go-time">Go time</p>
-            <p id="bus-route">Bus route</p>
-            <p id="bus-name">Bus name</p>
-            <p id="fare">Fare :</p>
-            <p id="reach-time">reach time</p>
-        </div>
+    <div class="buses" id="buses">
+        <span id="listing-div"></span>
     </div>
+    

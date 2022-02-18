@@ -22,8 +22,9 @@ component {
 
             if (today == date ) {
                 myQuery = queryExecute(
-                    "SELECT * FROM br_bus_routes 
-                    WHERE route_from = :fid AND route_to = :tid AND available_today = :f;", 
+                    "SELECT br_bus_routes.id as route_id, bus_id, bus_name, bus_type, no_of_seats, departure_time, arrival_time, price 
+                    FROM br_bus_routes INNER JOIN br_buses ON br_bus_routes.bus_id = br_buses.id 
+                    WHERE route_from = :fid AND route_to = :tid AND br_bus_routes.available_today = :f;", 
                     {
                         fid: { cfsqltype: "cf_sql_integer", value: loc_f },
                         tid: { cfsqltype: "cf_sql_integer", value: loc_t },
@@ -33,7 +34,8 @@ component {
             }
             else{
                 myQuery = queryExecute(
-                    "SELECT * FROM br_bus_routes 
+                    "SELECT br_bus_routes.id as route_id, bus_id, bus_name, bus_type, no_of_seats, departure_time, arrival_time, price 
+                    FROM br_bus_routes INNER JOIN br_buses ON br_bus_routes.bus_id = br_buses.id 
                     WHERE route_from = :fid AND route_to = :tid AND FIND_IN_SET(:dt, bus_days);", 
                     {
                         fid: { cfsqltype: "cf_sql_integer", value: loc_f },
@@ -45,26 +47,39 @@ component {
             }
             
             data.status 	= 	'ok';
-            data.bus_id	    =	myQuery.bus_id;
-            cfoutput( query="myQuery" ) {
 
-                myQuery1 = queryExecute(
-                    "SELECT * FROM br_buses 
-                    WHERE id = :bid;", 
-                    {
-                        bid: { cfsqltype: "cf_sql_integer", value: myQuery.bus_id }
-                    }
-                );
-                bus_name     =  myQuery1.bus_name;
-                totalseats   =  myQuery1.no_of_seats;
-                list         =  writeOutput("#myQuery.id#,#bus_name#,#myQuery.departure_time#,#myQuery.arrival_time#,#myQuery.price#,#totalseats#<br>");
+            list = arrayNew(1);
+            
+            for(row in myQuery){
+                myQuery.currentrow = arrayAppend(list, row);
             }
-                data.status 	        = 	'ok';
-                data.list	            =	list;
-                data.selectedDate.year	= DateFormat(date,"y");
-                data.selectedDate.month	= DateFormat(date,"m");
-                data.selectedDate.day	= DateFormat(date,"d");
-                writeOutput(serializeJSON(data));
+
+            data.list = list;
+            data.selectedDate.year	= DateFormat(date,"y");
+            data.selectedDate.month	= DateFormat(date,"m");
+            data.selectedDate.day	= DateFormat(date,"d");
+            
+            for(bus in data.list){
+                writeOutput('
+                    <form action="busSeats.cfm" method="post">
+                        <input type="hidden" name="busId" value="#bus.bus_id#">
+                        <input type="hidden" name="totalseats" value="#bus.no_of_seats#">
+                        <input type="hidden" name="price" value="#bus.price#">
+                        <input type="hidden" name="year" value="#data.selectedDate.year#">
+                        <input type="hidden" name="month" value="#data.selectedDate.month#">
+                        <input type="hidden" name="day" value="#data.selectedDate.day#">
+                        <button class="btn bus-book">
+                            <div class="bus-details">
+                                <p id="go-time">#timeformat(bus.arrival_time)#</p>
+                                <p id="bus-route">#bus.bus_name#</p>
+                                <p id="bus-name">#bus.bus_type#</p>
+                                <p id="fare">Fare : #bus.price#</p>
+                                <p id="reach-time">#timeformat(bus.departure_time)#</p>
+                            </div>
+                        </button>
+                    </form>
+                ');
+            }
         }
         catch(Exception e){
             data.status 	= 	'error';
