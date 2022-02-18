@@ -232,4 +232,45 @@ component displayname="buses"{
 				return 'error';
 			}
 		}
+
+	public function getBusesById(busid, userid)
+		{
+			try
+			{
+				result = queryExecute("SELECT 
+										   bus.id AS bus_id, 
+										   bus.bus_name AS bus_name, 
+										   bus.bus_type AS bus_type, 
+									       bus.layout_type AS layout_type, 
+									       IF(bus.available_today = 1, 'Yes', 'No') AS available_today, 
+									       bus.no_of_seats AS no_of_seats, 
+									       bus.created_by AS created_by,
+									       route.price AS price,
+									       route.bus_days AS bus_days,
+									       (SELECT city FROM br_city WHERE route.route_from = id  ) AS route_from,
+									       (SELECT city FROM br_city WHERE route.route_to = id  ) AS route_to,
+									       route.departure_time AS departure_time,
+									       route.arrival_time AS arrival_time,
+									       IF(route.available_today = 1, 'Yes', 'No' ) AS route_available_today,
+									       IF(route.daily_bus = 1, 'Yes', 'No' ) AS daily_bus
+									FROM 
+									       br_buses AS bus
+									LEFT JOIN 
+									       br_bus_routes AS route
+									ON 
+									       bus.id = route.bus_id	    
+									WHERE 
+									       bus.created_by = :userid AND bus.id = :busid
+       									",
+       									{
+       										userid: { cfsqltype: "cf_sql_integer", value: userid },
+       										busid: { cfsqltype: "cf_sql_integer", value: busid }
+       									});
+				return result;
+			}
+			catch(Exception e)
+			{
+				return 'error';
+			}
+		}	
 }
