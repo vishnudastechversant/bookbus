@@ -74,10 +74,10 @@
 														<td class="cell">#busData.route_available_today#</td>
 														<td class="cell">#busData.daily_bus#</td>
 														<td class="cell">
-															<a href="./editbus.cfm">Edit</a>
+															<a href="./editbus.cfm?busid=#busData.bus_id#">Edit</a>
 														</td>
 														<td class="cell">
-															<a href="./bookings.cfm">Show Bookings</a>
+															<a href="./bookings.cfm?busid=#busData.bus_id#">Show Bookings</a>
 														</td>
 													</tr>
 												</cfloop>

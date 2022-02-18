@@ -199,7 +199,9 @@ component displayname="buses"{
 		{
 			try
 			{
-				result = queryExecute("SELECT bus.bus_name AS bus_name, 
+				result = queryExecute("SELECT 
+										   bus.id AS bus_id, 
+										   bus.bus_name AS bus_name, 
 										   bus.bus_type AS bus_type, 
 									       bus.layout_type AS layout_type, 
 									       IF(bus.available_today = 1, 'Yes', 'No') AS available_today, 
