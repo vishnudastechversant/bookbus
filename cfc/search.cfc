@@ -16,6 +16,7 @@ component {
         data = structNew();
         date1  = DateFormat(date,"e");
         today  = DateFormat(Now(),"yyy-mm-dd");
+        list   ="";
 
         try {
 
@@ -54,8 +55,9 @@ component {
                         bid: { cfsqltype: "cf_sql_integer", value: myQuery.bus_id }
                     }
                 );
-                bus_name =  myQuery1.bus_name;
-                list     =  writeOutput("#myQuery.id#,#bus_name#,#myQuery.departure_time#,#myQuery.arrival_time#,#myQuery.price#<br>");
+                bus_name     =  myQuery1.bus_name;
+                totalseats   =  myQuery1.no_of_seats;
+                list         =  writeOutput("#myQuery.id#,#bus_name#,#myQuery.departure_time#,#myQuery.arrival_time#,#myQuery.price#,#totalseats#<br>");
             }
                 data.status 	        = 	'ok';
                 data.list	            =	list;

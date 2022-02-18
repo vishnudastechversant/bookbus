@@ -131,3 +131,54 @@ a{
 .error{
     font-size: 10px;
 }
+
+.buses{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 150px;
+    display: none;
+}
+
+.bus-details{
+    height: 100px;
+    width: 100%;
+    border: 1px solid #d84f57;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+#go-time{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+#bus-route{
+    position: absolute;
+    left: 100px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+#bus-name{
+    position: absolute;
+    top: 50px;
+    left: 50px;
+}
+
+#fare{
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+    color: #f70715;
+}
+
+#reach-time{
+    position: absolute;
+    right: 10px;
+}
