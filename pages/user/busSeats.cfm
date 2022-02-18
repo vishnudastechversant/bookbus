@@ -7,9 +7,12 @@
 <cfset session["selectedDate"]["year"] = 2022>
 <cfset session["selectedDate"]["month"] = 2>
 <cfset session["selectedDate"]["day"] = 12>
+<cfset year = session.selectedDate.year>
+<cfset month = session.selectedDate.month GT 9?session.selectedDate.month:'0#session.selectedDate.month#'>
+<cfset day =  session.selectedDate.day GT 9?session.selectedDate.day:'0#session.selectedDate.day#'>
+<cfset date = "#year#-#month#-#day#">
 <cfset bookingObj = CreateObject( "component", "bookbus.cfc.booking" )>
-<cfset seat_taken  = bookingObj.getBookedSeats(busId = bus_id)>
-<cfdump  var="#seat_taken#">
+<cfset seat_taken  = bookingObj.getBookedSeats(busId = bus_id, date = date)>
 <cfoutput>
     <input type="number" name="price" id="price" value="#price#" hidden/>
 </cfoutput>
@@ -45,6 +48,7 @@
                                 <input type="number" name="busId" id="busId" value="#bus_id#" hidden/>
                                 <input type="text" name="seats" id="seats" value="" hidden/>
                                 <input type="text" name="fare" id="fare" value="0" hidden/>
+                                <input type="date" name="date" id="date" value="#date#" hidden/>
                                 <input type="hidden" name="csrftoken" value="#csrfToken#" />
                             </cfoutput>
                             <button type="submit" class="btn btn-danger col-md-6">Pay Now</button>
