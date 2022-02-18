@@ -131,3 +131,6 @@ a{
 .error{
     font-size: 10px;
 }
+.booking-confirm{
+    height: 65vh;
+}

@@ -1,9 +1,15 @@
 <cfinclude  template="header.cfm">
+<cfset csrftoken= CSRFGenerateToken()/>
 <cfset layout_name = "layout">
 <cfset bus_id = 20>
 <cfset total_seats = 50>
 <cfset price = 10>
-<cfset seat_taken = "5,8,9,25,45,37">
+<cfset session["selectedDate"]["year"] = 2022>
+<cfset session["selectedDate"]["month"] = 2>
+<cfset session["selectedDate"]["day"] = 12>
+<cfset bookingObj = CreateObject( "component", "bookbus.cfc.booking" )>
+<cfset seat_taken  = bookingObj.getBookedSeats(busId = bus_id)>
+<cfdump  var="#seat_taken#">
 <cfoutput>
     <input type="number" name="price" id="price" value="#price#" hidden/>
 </cfoutput>
@@ -39,6 +45,7 @@
                                 <input type="number" name="busId" id="busId" value="#bus_id#" hidden/>
                                 <input type="text" name="seats" id="seats" value="" hidden/>
                                 <input type="text" name="fare" id="fare" value="0" hidden/>
+                                <input type="hidden" name="csrftoken" value="#csrfToken#" />
                             </cfoutput>
                             <button type="submit" class="btn btn-danger col-md-6">Pay Now</button>
                         </form>
