@@ -111,7 +111,7 @@
         }
     </script>
 
-    <!--- To handle search button click --->
+    <!--- To handle form validation --->
     <script>
         function handleSearch(event){
             <!--- for validation --->
@@ -120,28 +120,43 @@
             var jdate   = document.getElementById("date").value;
             if(locfrom ==""){
                 event.preventDefault();  
-                document.getElementById('from-error').innerHTML = "please select origin location"; 
+                document.getElementById('from-error').innerHTML = "please select origin location";
+                return false; 
             }
             if(locto ==""){
                 event.preventDefault(); 
-                document.getElementById('to-error').innerHTML = "please select destination location"; 
+                document.getElementById('to-error').innerHTML = "please select destination location";
+                return false;  
             }
             if(jdate ===""){
                 event.preventDefault(); 
-                document.getElementById('date-error').innerHTML = "please select date"; 
+                document.getElementById('date-error').innerHTML = "please select date";
+                return false;  
             }
             else{
-                event.preventDefault(); 
                 document.getElementById('jrn-date').innerHTML = "";
             }
             if((locfrom !=="") && (!locto !=="")){
                 if(locfrom == locto){
                     event.preventDefault(); 
-                    document.getElementById('loc-list-to').innerHTML = "Origin and Destination location cannot be the same"; 
+                    document.getElementById('to-error').innerHTML = "Origin and Destination location cannot be the same";
+                    return false;  
                 }
             }
+            <!--- after submit --->
+            var locf_id = document.getElementById("loc_id_from").value;
+            var loct_id = document.getElementById("loc_id_to").value;
+            var xhr     = new XMLHttpRequest();
+            xhr.open("post","../../cfc/search.cfc?method=Listfunction&loc_f="+locf_id+"&loc_t="+loct_id+"&date="+jdate);
+            xhr.send();
+            xhr.onreadystatechange = function(){
+                console.log(this.responseText);          
+                document.getElementById("listing-div").innerHTML = this.responseText;
+            }    
         }
     </script>
+
+    <!--- To handle toggle button click --->
     <script>
         function handleToggle(){
             var locfrom = document.getElementById("from").value;

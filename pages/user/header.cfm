@@ -1,3 +1,4 @@
+<cfset csrftoken= CSRFGenerateToken()/>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,34 +19,37 @@
             <p>Ticket+</p>
         </div>
         <div class="search-box">
-            <form class="search-form" action="" method="post">
-                <div class="form-div">
-                    <label>Pick-Up From</label>
-                    <input type="text" class="form-input" name="from" id="from" placeholder="where are you from" onkeyup="handleLocation(this.value,'from')" required>
-                    <input type="hidden" name="loc_id_from" id="loc_id_from" value=""/>
-                    <span class="error" id="from-error"></span>
-                    <ul class="list-group" id="loc-list"></ul>
-                </div>
-                <div class="exchange">
-                    <i class="fa fa-exchange" onclick="handleToggle()"></i>
-                </div>
-                <div class="form-div">
-                    <label>Drop To</label>
-                    <input type="text" class="form-input" name="to" id="to" placeholder="select your destination" onkeyup="handleLocation(this.value,'to')" required>
-                    <input type="hidden" name="loc_id_to" id="loc_id_to" value=""/>
-                    <span class="error" id="to-error"></span>
-                    <ul class="list-group" id="loc-list-to"></ul>
-                </div>
-                <div class="form-div">
-                    <label>Date</label>
-                    <input type="date" class="form-input" name="date" id="date" required>
-                    <span class="error" id="date-error"></span>
-                    <span id="jrn-date"> </span>
-                </div>
-                <button class="btn search-btn" onclick="handleSearch(event)">
-                    <i class="fa fa-search"></i>
-                </button>
-            </form>
+            <cfoutput>
+                <form class="search-form" method="post">
+                    <div class="form-div">
+                        <label>Pick-Up From</label>
+                        <input type="text" class="form-input" name="from" id="from" placeholder="where are you from" onkeyup="handleLocation(this.value,'from')" required>
+                        <input type="hidden" name="loc_id_from" id="loc_id_from" value=""/>
+                        <input name="csrftoken" type="hidden" value="#csrfToken#">
+                        <span class="error" id="from-error"></span>
+                        <ul class="list-group" id="loc-list"></ul>
+                    </div>
+                    <div class="exchange">
+                        <i class="fa fa-exchange" onclick="handleToggle()"></i>
+                    </div>
+                    <div class="form-div">
+                        <label>Drop To</label>
+                        <input type="text" class="form-input" name="to" id="to" placeholder="select your destination" onkeyup="handleLocation(this.value,'to')" required>
+                        <input type="hidden" name="loc_id_to" id="loc_id_to" value=""/>
+                        <span class="error" id="to-error"></span>
+                        <ul class="list-group" id="loc-list-to"></ul>
+                    </div>
+                    <div class="form-div">
+                        <label>Date</label>
+                        <input type="date" class="form-input" name="date" id="date" required>
+                        <span class="error" id="date-error"></span>
+                        <span id="jrn-date"> </span>
+                    </div>
+                    <button class="btn search-btn" onClick="handleSearch(event); return false;">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </cfoutput>
         </div>
         <div class="user-details">
             <cfif structKeyExists(session, "id")>
@@ -85,7 +89,6 @@
                         </div>
                         <button class="btn btn-success">Submit</button>
                     </form>
-
                     <div class="social-login">
                         <a href="javascript:void(0);" onclick="FbLogin();" id="fbLink">
                             <button class="social-btn fb">f</button>
@@ -107,45 +110,41 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="../../cfc/user.cfc?method=register" method="post">
-                        <div class="form-div">
-                            <label>Full Name</label>
-                            <input type="text" class="form-input" name="name" placeholder="Enter your name" required>
-                        </div>
-                        <div class="form-div">
-                            <label>Email Id</label>
-                            <input type="text" class="form-input" name="emailId" placeholder="Enter your emailid" required>
-                        </div>
-                        <div class="form-div">
-                            <label>Role</label>
-                            <select class="form-input" name="role" required>
-                                <option disabled selected value="">select your role</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Customer</option>
-                            </select>
-                        </div>
-                        <div class="form-div">
-                            <label>Password</label>
-                            <input type="password" class="form-input" id="password" name="password" placeholder="Enter your password" required>
-                        </div>
-                        <div class="form-div">
-                            <label>Confirm password</label>
-                            <input type="password" class="form-input" id="cPassword" name="cPassword" placeholder="Confirm password">
-                        </div>
-                        <p id="message"></p>
-                        <button class="btn btn-success" id="registerBtn" name="submit">Submit</button>
-                    </form>
+                    <cfoutput>
+                        <form action="../../cfc/user.cfc?method=register" method="post">
+                            <div class="form-div">
+                                <label>Full Name</label>
+                                <input type="text" class="form-input" name="name" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-div">
+                                <label>Email Id</label>
+                                <input type="text" class="form-input" name="emailId" placeholder="Enter your emailid" required>
+                            </div>
+                            <div class="form-div">
+                                <label>Role</label>
+                                <select class="form-input" name="role" required>
+                                    <option disabled selected value="">select your role</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">Customer</option>
+                                </select>
+                            </div>
+                            <div class="form-div">
+                                <label>Password</label>
+                                <input type="password" class="form-input" id="password" name="password" placeholder="Enter your password" required>
+                            </div>
+                            <div class="form-div">
+                                <label>Confirm password</label>
+                                <input type="password" class="form-input" id="cPassword" name="cPassword" placeholder="Confirm password">
+                            </div>
+                            <p id="message"></p>
+                            <button class="btn btn-success" id="registerBtn" name="submit">Submit</button>
+                        </form>
+                    </cfoutput>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="buses">
-        <div class="bus-details">
-            <p id="go-time">go time</p>
-            <p id="bus-route">Bus Route</p>
-            <p id="bus-name">Bus Name</p>
-            <p id="fare">Fare :</p>
-            <p id="reach-time">end time</p>
-        </div>
-    </div>
+    
+        <!--- for listing --->
+        <span id="listing-div">fs </span>
