@@ -8,10 +8,13 @@ component {
     this.ormSettings = { logsql : true };
 
     function onRequestStart(requestname){ 
+        if(findNoCase("/bookbus/index.cfm",requestname) > 0){
+            location("/bookbus/pages/user/index.cfm",false);
+        }
 
     }
 
-/*  function onError(Exception,EventName){
+    function onError(Exception,EventName){
         writeOutput('<center><h1>An error occurred</h1>
 		<p>Please Contact the developer</p>
 		<p>Error details: #Exception.message#</p></center>');
@@ -20,5 +23,5 @@ component {
     function onMissingTemplate(targetPage){
         writeOutput('<center><h1>This Page is not avilable.</h1>
 		<p>Please go back:</p></center>');
-    } */
+    }
 }
