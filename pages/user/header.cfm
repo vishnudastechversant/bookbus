@@ -148,11 +148,4 @@
             <p id="fare">Fare :</p>
             <p id="reach-time">end time</p>
         </div>
-        <div class="bus-details">
-            <p id="go-time">go time</p>
-            <p id="bus-route">Bus Route</p>
-            <p id="bus-name">Bus Name</p>
-            <p id="fare">Fare :</p>
-            <p id="reach-time">end time</p>
-        </div>
     </div>
