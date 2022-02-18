@@ -1,9 +1,10 @@
 component {
 
-	private function getUser(id="0", emailId="", fbToken="") {
+	private function getUser(id="0", emailId="a@gmail.com", fbToken="1") {
 
 		userDetails = queryExecute("SELECT * FROM br_user WHERE id = :id OR email = :emailId OR facebook_token = :fbToken",
-		{id=id, emailId=emailId, fbToken=fbToken});
+		{id={cfsqltype:"cf_sql_integer", value:id}, emailId={cfsqltype:"cf_sql_nvarchar", value:emailId},
+		fbToken={cfsqltype:"cf_sql_nvarchar", value:fbToken}});
         
         return userDetails;
 	}
@@ -13,10 +14,27 @@ component {
 		data = structNew();
 
 		try{
-			addUser = queryExecute("INSERT INTO br_user (fullname, email, password, google_token, facebook_token, login_type, user_role)
-			VALUES
-			('#name#', '#emailId#', '#password#', '#googleToken#', '#fbToken#', '#loginType#', '#role#')",
-			{}, {result = "addUserResult"});	
+
+			cfquery( name="addUser", result="addUserResult" ) {
+
+				writeOutput("INSERT INTO br_user (fullname, email, password, google_token, facebook_token, login_type, user_role)
+				VALUES
+				(");
+				cfqueryparam( cfsqltype="cf_sql_nvarchar", value=name );
+				writeOutput(",");
+				cfqueryparam( cfsqltype="cf_sql_nvarchar", value=emailId );
+				writeOutput(",");
+				cfqueryparam( cfsqltype="cf_sql_nvarchar", value=password );
+				writeOutput(",");
+				cfqueryparam( cfsqltype="cf_sql_nvarchar", value=googleToken );
+				writeOutput(",");
+				cfqueryparam( cfsqltype="cf_sql_nvarchar", value=fbToken );
+				writeOutput(",");
+				cfqueryparam( cfsqltype="cf_sql_nvarchar", value=loginType );
+				writeOutput(",");
+				cfqueryparam( cfsqltype="cf_sql_integer", value=role );
+				writeOutput(")");
+			}
 
 			data.status = "success";
 			data.text = addUserResult.generatedKey;
@@ -29,10 +47,10 @@ component {
         return data;
 	}
 
-    private function loginCheck(emailId="", fbToken="") {
+    private function loginCheck(emailId="", fbToken="1") {
 		
 		loginCheck = queryExecute("SELECT * FROM br_user WHERE email = :emailId OR facebook_token = :fbToken", 
-		{emailId=emailId, fbToken=fbToken});
+		{emailId={cfsqltype: "cf_sql_nvarchar", value:emailId}, fbToken={cfsqltype: "cf_sql_nvarchar", value:fbToken}});
 		
         return loginCheck.recordCount;
 	}
