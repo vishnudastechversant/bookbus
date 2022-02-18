@@ -19,7 +19,8 @@
                      </cfif>   
                </cfif>
             </cfoutput>
-            <cfdump var="#Session#" />
+            <cfset cityObj  = createObject("component", "local.cfc.admin.buses")>
+            <cfset citydata = cityObj.getCity() />
             <cfoutput>
                <form class="addbus-form needs-validation" method="POST" action="../../cfc/admin/buses.cfc?method=addbus" name="addbus-form" id="addbus-form" onsubmit="return addSubmit(event)" novalidate>
                   <div class="mb-3">
@@ -99,7 +100,18 @@
                               <div class="col-4">
                                  <div class="mb-3">
                                     <label for="route-from" class="form-label">Route From</label>
-                                    <input type="text" class="form-control" name="route_from" id="route-from" value="<cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'route_from')>#Session.admin_form.route_from#</cfif>" required>
+                                    <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'route_from')>
+                                          <cfset sel_route_from = Session.admin_form.route_from />
+                                       <cfelse>
+                                          <cfset sel_route_from = '' />
+                                    </cfif>
+                                    <select name="route_from" class="form-control" id="route-from">
+                                       <option <cfif sel_layout_type EQ ''>selected="selected"</cfif> disabled value="">Select a city</option>
+                                       <cfloop query="citydata">
+                                         <option <cfif sel_route_from EQ citydata.id>selected="selected"</cfif> value="#citydata.id#">#citydata.city#</option>
+                                       </cfloop>
+                                    </select>
+                                    
                                     <div class="invalid-feedback">
                                        Please provide route from.
                                     </div>
@@ -108,7 +120,17 @@
                               <div class="col-4">
                                  <div class="mb-3">
                                     <label for="route-to" class="form-label">Route To</label>
-                                    <input type="text" class="form-control" name="route_to" id="route-to" value="<cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'route_to')>#Session.admin_form.route_to#</cfif>" required>
+                                    <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'route_from')>
+                                          <cfset sel_route_to = Session.admin_form.route_to />
+                                       <cfelse>
+                                          <cfset sel_route_to = '' />
+                                    </cfif>
+                                    <select name="route_to" class="form-control" id="route-to">
+                                       <option <cfif sel_route_to EQ ''>selected="selected"</cfif> disabled value="">Select a city</option>
+                                       <cfloop query="citydata">
+                                         <option <cfif sel_route_from EQ citydata.id>selected="selected"</cfif> value="#citydata.id#">#citydata.city#</option>
+                                       </cfloop>
+                                    </select>
                                     <div class="invalid-feedback">
                                        Please provide route to.
                                      </div>

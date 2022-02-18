@@ -1,4 +1,4 @@
-component{
+component displayname="buses"{
 
 	remote function addbus()
 		{
@@ -180,5 +180,19 @@ component{
 			{
 				return 'error';
 			}
+		}
+
+	public function getCity()
+		{
+			try 
+			{
+				result = queryExecute("SELECT * FROM br_city");
+				return result;	
+			}
+			catch(Exception e) 
+			{
+				return 'error';
+			}
+
 		}
 }
