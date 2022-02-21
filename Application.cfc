@@ -20,6 +20,7 @@ component {
             }
         }
 
+<<<<<<< HEAD
     function onRequestStart(requestname){ 
         if(findNoCase("/bookbus/index.cfm",requestname) > 0){
             location("/bookbus/pages/user/index.cfm",false);
@@ -35,6 +36,8 @@ component {
 
     }
 
+=======
+>>>>>>> fee1148f85d8d80e980a2cd40f8ba4e5e8f9717f
     function onError(Exception,EventName){
         writeOutput('<center><h1>An error occurred</h1>
         <p>Please Contact the developer</p>
