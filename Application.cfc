@@ -13,10 +13,6 @@ component {
         ORMReload();
     }
 
-    function onRequestStart(requestname){ 
-        ORMReload();
-    }
-
     function onError(Exception,EventName){
         writeOutput('<center><h1>An error occurred</h1>
 		<p>Please Contact the developer</p>
