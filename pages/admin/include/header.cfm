@@ -29,10 +29,10 @@
                         <i class="search-mobile-trigger-icon fas fa-search"></i>
                      </div>
                      <div class="app-search-box col">
-                        <!--<form class="app-search-form">   
+                        <form class="app-search-form">   
                            <input type="text" placeholder="Search..." name="search" class="form-control search-input">
                            <button type="submit" class="btn search-btn btn-primary" value="Search"><i class="fas fa-search"></i></button> 
-                        </form> -->
+                        </form>
                      </div>
                      <div class="app-utilities col-auto">
                         <div class="app-utility-item app-user-dropdown dropdown">
@@ -61,7 +61,7 @@
                <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
                   <ul class="app-menu list-unstyled accordion" id="menu-accordion">
                      <li class="nav-item">
-                        <a class="nav-link active" href="index.cfm">
+                        <a class="nav-link" href="index.cfm">
                            <span class="nav-icon">
                               <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                  <path fill-rule="evenodd" d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z"/>
@@ -82,22 +82,67 @@
                            <span class="nav-link-text">Sample Form</span>
                         </a>
                      </li>
-                     <!--------------- ADD MENU HERE ------------------------->
 
+                     <!--Bus section menus-->
 
+                     <cfif FindNoCase('addnewbus.cfm', cgi.script_name)>
+                           <cfset parentbusexpanded   = 'true'   />
+                           <cfset parentbusshow       = 'show'   />
+                           <cfset parentbusactive     = 'active' />
+                           <cfset newbusactive        = 'active' />
+                        <cfelse>
+                           <cfset parentbusexpanded   = 'false' />
+                           <cfset parentbusshow       = '' />
+                           <cfset parentbusactive     = '' />
+                           <cfset newbusactive        = '' />
+                     </cfif>
+                     <cfif FindNoCase('listbus.cfm', cgi.script_name)>
+                           <cfset parentbusexpanded   = 'true'   />
+                           <cfset parentbusshow       = 'show'   />
+                           <cfset parentbusactive     = 'active' />
+                           <cfset listbusactive        = 'active' />
+                        <cfelse>
+                           <cfset parentbusexpanded   = 'false' />
+                           <cfset parentbusshow       = '' />
+                           <cfset parentbusactive     = '' />
+                           <cfset listbusactive       = '' />
+                     </cfif>
+                     <li class="nav-item has-submenu">
+                        <a class="nav-link submenu-toggle <cfoutput>#parentbusactive#</cfoutput>" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="<cfoutput>#parentbusexpanded#</cfoutput>" aria-controls="submenu-1">
+                           <span class="nav-icon">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-files" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M4 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z"/>
+                              <path d="M6 0h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1H4a2 2 0 0 1 2-2z"/>
+                              </svg>
+                           </span>
+                           <span class="nav-link-text">Buses</span>
+                           <span class="submenu-arrow">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                           </span>
+                        </a>
+                        <div id="submenu-1" class="collapse submenu submenu-1 <cfoutput>#parentbusshow#</cfoutput>" data-bs-parent="#menu-accordion">
+                           <ul class="submenu-list list-unstyled">
+                              <li class="submenu-item">
+                                 <a class="submenu-link <cfoutput>#listbusactive#</cfoutput>" href="listbus.cfm">List All Bus</a>
+                              </li>
+                              <li class="submenu-item">
+                                 <a class="submenu-link  <cfoutput>#newbusactive#</cfoutput>" href="addnewbus.cfm">
+                                    Add New Bus
+                                 </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </li>
 
-
-
-
-
-                    <!---------------- ADD MENU END HERE ------------------------>
+                     <!--EOD-->
                   </ul>
                </nav>
                <div class="app-sidepanel-footer">
                   <nav class="app-nav app-nav-footer">
                      <ul class="app-menu footer-menu list-unstyled">
-
-                       <!-- <li class="nav-item">
+                        <!-- <li class="nav-item">
                            <a class="nav-link" href="settings.html">
                               <span class="nav-icon">
                                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-gear" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -108,7 +153,6 @@
                               <span class="nav-link-text">Settings</span>
                            </a>
                         </li> -->
-                       
                      </ul>
                   </nav>
                </div>
