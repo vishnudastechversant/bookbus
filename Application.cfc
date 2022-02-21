@@ -7,13 +7,13 @@ component {
     this.ormEnabled = true;
     this.ormSettings = { logsql : true, datasource = "busbooking", cfclocation = ["entity"] };
     this.mappings["/local"]     = getDirectoryFromPath(getCurrentTemplatePath());
-    
+
     function onRequestStart(requestname){ 
-        if(findNoCase("/busreservation/index.cfm",requestname) > 0){
-            location("/busreservation/pages/user/index.cfm",false);
+        if(findNoCase("/bookbus/index.cfm",requestname) > 0){
+            location("/bookbus/pages/user/index.cfm",false);
         } 
         if(!structKeyExists(session, "id") ){
-            if(findNoCase("/busreservation/cfc/booking.cfc",requestname) > 0){
+            if(findNoCase("/bookbus/cfc/booking.cfc",requestname) > 0){
                 writeOutput('<center><h1>Login Required</h1>
                 <p>Please Login to yout account</p></center>');
                 abort;
