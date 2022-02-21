@@ -23,21 +23,25 @@
             <cfset citydata = cityObj.getCity() />
             <cfset busObj   = createObject("component", "local.cfc.admin.buses")>
             <cfset busData  = busObj.getBusesById(url.busid,1) />
-            <cfdump var="#busData#" />
+            <cfif arrayLen(busData) EQ 1>
+               <cfset bus_data = busData[1] />
+            <cfelse>
+               <cflocation url="listbus.cfm" />   
+            </cfif>
             <cfoutput>
-               <form class="addbus-form needs-validation" method="POST" action="../../cfc/admin/buses.cfc?method=addbus" name="addbus-form" id="addbus-form" onsubmit="return addSubmit(event)" novalidate>
+               <form class="addbus-form needs-validation" method="POST" action="../../cfc/admin/buses.cfc?method=editbus" name="addbus-form" id="addbus-form" onsubmit="return addSubmit(event)" novalidate>
                   <div class="mb-3">
                      <label for="bus-name" class="form-label">
                         Bus Name
                      </label>
-                     <input type="text" class="form-control" name="bus_name" id="bus-name" value="<cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'bus_name')>#Session.admin_form.bus_name#</cfif>" required>
+                     <input type="text" class="form-control" name="bus_name" id="bus-name" value="<cfif structKeyExists(bus_data,'bus_name')>#bus_data.bus_name#</cfif>" required>
                      <div class="invalid-feedback">
                         Please provide a valid bus name.
                       </div>
                   </div>
                   <div class="mb-3">
-                     <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'bus_type')>
-                           <cfset sel_bus_type = Session.admin_form.bus_type />
+                     <cfif structKeyExists(bus_data, 'bus_type')>
+                           <cfset sel_bus_type = bus_data.bus_type />
                         <cfelse>
                            <cfset sel_bus_type = '' />
                      </cfif>
@@ -54,8 +58,8 @@
                      </div>
                   </div>
                   <div class="mb-3">
-                     <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'layout_type')>
-                           <cfset sel_layout_type = Session.admin_form.layout_type />
+                     <cfif structKeyExists(bus_data, 'layout_type')>
+                           <cfset sel_layout_type = bus_data.layout_type />
                         <cfelse>
                            <cfset sel_layout_type = '' />
                      </cfif>
@@ -70,8 +74,8 @@
                       </div>
                   </div>
                   <div class="mb-3">
-                     <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'available_today')>
-                           <cfset sel_available_type = Session.admin_form.available_today />
+                     <cfif structKeyExists(bus_data, 'available_today')>
+                           <cfset sel_available_type = bus_data.available_today />
                         <cfelse>
                            <cfset sel_available_type = '' />
                      </cfif>
@@ -86,7 +90,7 @@
                   </div>
                   <div class="mb-3">
                      <label for="seat-count" class="form-label">Number of seats</label>
-                     <input type="number" class="form-control" name="seat_count" id="seat-count" min="0" value="<cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'seat_count')>#Session.admin_form.seat_count#</cfif>"   required>
+                     <input type="number" class="form-control" name="seat_count" id="seat-count" min="0" value="<cfif structKeyExists(bus_data, 'no_of_seats')>#bus_data.no_of_seats#</cfif>"   required>
                      <div class="invalid-feedback">
                         Please select number of seats.
                       </div>
@@ -103,13 +107,13 @@
                               <div class="col-4">
                                  <div class="mb-3">
                                     <label for="route-from" class="form-label">Route From</label>
-                                    <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'route_from')>
-                                          <cfset sel_route_from = Session.admin_form.route_from />
+                                    <cfif structKeyExists(bus_data, 'route_from')>
+                                          <cfset sel_route_from = bus_data.route_from />
                                        <cfelse>
                                           <cfset sel_route_from = '' />
                                     </cfif>
                                     <select name="route_from" class="form-control" id="route-from">
-                                       <option <cfif sel_layout_type EQ ''>selected="selected"</cfif> disabled value="">Select a city</option>
+                                       <option <cfif sel_route_from EQ ''>selected="selected"</cfif> disabled value="">Select a city</option>
                                        <cfloop query="citydata">
                                          <option <cfif sel_route_from EQ citydata.id>selected="selected"</cfif> value="#citydata.id#">#citydata.city#</option>
                                        </cfloop>
@@ -123,8 +127,8 @@
                               <div class="col-4">
                                  <div class="mb-3">
                                     <label for="route-to" class="form-label">Route To</label>
-                                    <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'route_from')>
-                                          <cfset sel_route_to = Session.admin_form.route_to />
+                                    <cfif structKeyExists(bus_data, 'route_to')>
+                                          <cfset sel_route_to = bus_data.route_to />
                                        <cfelse>
                                           <cfset sel_route_to = '' />
                                     </cfif>
@@ -141,8 +145,8 @@
                               </div>
                               <div class="col-4">
                                  <div class="mb-3">
-                                    <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'main_route')>
-                                          <cfset sel_main_route = Session.admin_form.main_route />
+                                    <cfif structKeyExists(bus_data, 'main_route')>
+                                          <cfset sel_main_route = bus_data.main_route />
                                        <cfelse>
                                           <cfset sel_main_route = '' />
                                     </cfif>
@@ -160,8 +164,8 @@
                            <div class="row gx-5 gy-3">
                               <div class="col-4">
                                  <div class="mb-3">
-                                    <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'daily_bus')>
-                                          <cfset sel_daily_bus = Session.admin_form.daily_bus />
+                                    <cfif structKeyExists(bus_data, 'daily_bus')>
+                                          <cfset sel_daily_bus = bus_data.daily_bus />
                                        <cfelse>
                                           <cfset sel_daily_bus = '' />
                                     </cfif>
@@ -177,8 +181,8 @@
                               </div>
                               <div class="col-4">
                                  <div class="mb-3">
-                                    <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'route_available')>
-                                          <cfset sel_route_available = Session.admin_form.route_available />
+                                    <cfif structKeyExists(bus_data, 'route_available_today')>
+                                          <cfset sel_route_available = bus_data.route_available_today />
                                        <cfelse>
                                           <cfset sel_route_available = '' />
                                     </cfif>
@@ -194,14 +198,14 @@
                               </div>
                               <div class="col-4">
                                  <div class="mb-3">
-                                    <cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'bus_days')>
-                                          <cfset sel_bus_days = Session.admin_form.bus_days />
+                                    <cfif structKeyExists(bus_data, 'bus_days')>
+                                          <cfset sel_bus_days = bus_data.bus_days />
                                        <cfelse>
                                           <cfset sel_bus_days = '' />
                                     </cfif>
                                     <label for="bus-days" class="form-label">Bus Days</label>
                                     <select name="bus_days" class="form-control" id="bus-days" multiple style="height: 200px;">
-                                       <option selected disabled value="">Select bus available days</option>
+                                       <option <cfif sel_bus_days EQ ''>selected="selected"</cfif> disabled value="">Select bus available days</option>
                                        <option value="sun" <cfif FindNoCase('sun',sel_bus_days)>selected="selected"</cfif> >Sunday</option>
                                        <option value="mon" <cfif FindNoCase('mon',sel_bus_days)>selected="selected"</cfif> >Monday</option>
                                        <option value="tue" <cfif FindNoCase('tue',sel_bus_days)>selected="selected"</cfif> >Tuesday</option>
@@ -220,7 +224,7 @@
                               <div class="col-4">
                                  <div class="mb-3">
                                     <label for="departure-time" class="form-label">Departure Time</label>
-                                    <input type="time" class="form-control" name="departure_time" id="departure-time" value="<cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'departure_time')>#Session.admin_form.departure_time#</cfif>" required>
+                                    <input type="time" class="form-control" name="departure_time" id="departure-time" value="<cfif structKeyExists(bus_data, 'departure_time')>#bus_data.departure_time#</cfif>" required>
                                     <div class="invalid-feedback">
                                        Please choose departure time.
                                     </div>
@@ -229,7 +233,7 @@
                               <div class="col-4">
                                  <div class="mb-3">
                                     <label for="arrival-time" class="form-label">Arrival Time</label>
-                                    <input type="time" class="form-control" name="arrival_time" id="arrival-time" value="<cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'arrival_time')>#Session.admin_form.arrival_time#</cfif>"  required>
+                                    <input type="time" class="form-control" name="arrival_time" id="arrival-time" value="<cfif structKeyExists(bus_data, 'arrival_time')>#bus_data.arrival_time#</cfif>"  required>
                                     <div class="invalid-feedback">
                                        Please choose arrival time.
                                     </div>
@@ -238,9 +242,10 @@
                               <div class="col-4">
                                  <cfset csrftoken= CSRFGenerateToken()/>
                                  <input type="hidden" name="csrftoken" value="<cfoutput>#csrfToken#</cfoutput>" />
+                                 <input type="hidden" name="busid" value="<cfoutput>#url.busid#</cfoutput>" />
                                  <div class="mb-3">
                                     <label for="bus-price" class="form-label">Price</label>
-                                    <input type="number" class="form-control" name="bus_price" id="bus-price" value="<cfif structKeyExists(Session,'admin_form') AND structKeyExists(Session.admin_form, 'bus_price')>#Session.admin_form.bus_price#</cfif>"  required>
+                                    <input type="number" class="form-control" name="bus_price" id="bus-price" value="<cfif structKeyExists(bus_data, 'price')>#bus_data.price#</cfif>"  required>
                                     <div class="invalid-feedback">
                                        Please add bus price.
                                     </div>
