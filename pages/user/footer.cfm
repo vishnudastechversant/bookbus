@@ -150,7 +150,9 @@
             xhr.open("post","../../cfc/search.cfc?method=Listfunction&loc_f="+locf_id+"&loc_t="+loct_id+"&date="+jdate);
             xhr.send();
             xhr.onreadystatechange = function(){
-                document.getElementById("banner").style.display = "none";
+                if(document.getElementById("banner")){
+                    document.getElementById("banner").style.display = "none";
+                }
                 document.getElementById("buses").style.display = "block";
                 document.getElementById("listing-div").innerHTML = this.responseText;
             }    
