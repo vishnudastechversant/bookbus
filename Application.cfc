@@ -19,8 +19,6 @@ component {
                 abort;
             }
         }
-
-
     }
 
     function onError(Exception,EventName){

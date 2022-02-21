@@ -1,15 +1,12 @@
 <cfinclude  template="header.cfm">
 <cfset csrftoken= CSRFGenerateToken()/>
 <cfset layout_name = "layout">
-<cfset bus_id = 20>
-<cfset total_seats = 50>
-<cfset price = 10>
-<cfset session["selectedDate"]["year"] = 2022>
-<cfset session["selectedDate"]["month"] = 2>
-<cfset session["selectedDate"]["day"] = 12>
-<cfset year = session.selectedDate.year>
-<cfset month = session.selectedDate.month GT 9?session.selectedDate.month:'0#session.selectedDate.month#'>
-<cfset day =  session.selectedDate.day GT 9?session.selectedDate.day:'0#session.selectedDate.day#'>
+<cfset bus_id = form.busId>
+<cfset total_seats = form.totalseats>
+<cfset price = form.price>
+<cfset year = form.year>
+<cfset month = form.month GT 9?form.month:'0#form.month#'>
+<cfset day =  form.day GT 9?form.day:'0#form.day#'>
 <cfset date = "#year#-#month#-#day#">
 <cfset bookingObj = CreateObject( "component", "bookbus.cfc.booking" )>
 <cfset seat_taken  = bookingObj.getBookedSeats(busId = bus_id, date = date)>
