@@ -20,20 +20,6 @@ component {
             }
         }
     }
-    function onRequestStart(requestname){ 
-        if(findNoCase("/bookbus/index.cfm",requestname) > 0){
-            location("/bookbus/pages/user/index.cfm",false);
-        } 
-        if(!structKeyExists(session, "id") ){
-            if(findNoCase("/bookbus/cfc/booking.cfc",requestname) > 0){
-                writeOutput('<center><h1>Login Required</h1>
-                <p>Please Login to yout account</p></center>');
-                abort;
-            }
-        }
-
-
-    }
 
     function onError(Exception,EventName){
         writeOutput('<center><h1>An error occurred</h1>
