@@ -7,6 +7,7 @@ component {
     this.ormEnabled = true;
     this.ormSettings = { logsql : true, datasource = "busbooking", cfclocation = ["entity"] };
     this.mappings["/local"]     = getDirectoryFromPath(getCurrentTemplatePath());
+    
     function onRequestStart(requestname){ 
         if(findNoCase("/busreservation/index.cfm",requestname) > 0){
             location("/busreservation/pages/user/index.cfm",false);
