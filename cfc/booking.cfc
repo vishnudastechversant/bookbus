@@ -4,19 +4,19 @@ component {
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please Contact the developer</p>
                         <p>Error details: Invalid Request</p></center>');
-            exit;
+            abort;
         }
         if(seats == ""){
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please select your seats</p>
                         <p>Error details: No seat Selected</p></center>');
-            exit;
+            abort;
         }
         if(!isNumeric(busId) || busId < 1 ){
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please select your seats</p>
                         <p>Error details: No seat Selected</p></center>');
-            exit;
+            abort;
         }
         seatsFromQuery = listToArray(bookedSeats(busId,date));
         seatList = listToArray(seats);
@@ -28,9 +28,8 @@ component {
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Seats you choose was already booked. Please select your seats again</p>
                         <p>Error details: Seat Selected Was Already Booked</p></center>');
-            exit;
+            abort;
         }
-        writeDump(seatAlreadyTaken);
         try{
             cfquery( name="setBooking", result="bookingResults" ){
                 writeOutput("insert into br_bookings (customer, bus_id, seat_no, fare, paid, status, booked_on) values ");
@@ -57,7 +56,7 @@ component {
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please Contact the developer</p>
                         <p>Error details: #e.message#</p></center>');
-            return;
+            abort;
         }
         location("../pages/user/bookingConfirmed.cfm", "false");
     }
@@ -89,7 +88,7 @@ component {
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please Contact the developer</p>
                         <p>Error details: #e.message#</p></center>');
-            return;
+            abort;
         }
 
     }
