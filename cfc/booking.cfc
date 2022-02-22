@@ -1,22 +1,22 @@
 component { 
-    remote function setBooking(required numeric busId,required string seats,required numeric fare,required string date) { 
+    remote function setBooking(required numeric busId, required string seats, required numeric fare, required numeric routeId, required string date) { 
         if((not isdefined("form.csrfToken")) OR (not CSRFVerifyToken(form.csrfToken))){
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please Contact the developer</p>
                         <p>Error details: Invalid Request</p></center>');
-            exit;
+            abort;
         }
         if(seats == ""){
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please select your seats</p>
                         <p>Error details: No seat Selected</p></center>');
-            exit;
+            abort;
         }
         if(!isNumeric(busId) || busId < 1 ){
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please select your seats</p>
                         <p>Error details: No seat Selected</p></center>');
-            exit;
+            abort;
         }
         seatsFromQuery = listToArray(bookedSeats(busId,date));
         seatList = listToArray(seats);
@@ -28,12 +28,11 @@ component {
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Seats you choose was already booked. Please select your seats again</p>
                         <p>Error details: Seat Selected Was Already Booked</p></center>');
-            exit;
+            abort;
         }
-        writeDump(seatAlreadyTaken);
         try{
             cfquery( name="setBooking", result="bookingResults" ){
-                writeOutput("insert into br_bookings (customer, bus_id, seat_no, fare, paid, status, booked_on) values ");
+                writeOutput("insert into br_bookings (customer, bus_id, seat_no, fare, route_id, paid, status, booked_on) values ");
                 for (i = 1; i <= arrayLen(seatList); i++){
                     if(i> 1 ) { writeOutput(",");}
                     writeOutput("(");
@@ -44,6 +43,8 @@ component {
                     cfqueryparam( cfsqltype="cf_sql_integer", value=seatList[i] );
                     writeOutput(",");
                     cfqueryparam( cfsqltype="cf_sql_integer", value=fare );
+                    writeOutput(",");
+                    cfqueryparam( cfsqltype="cf_sql_integer", value=routeId );
                     writeOutput(",");
                     cfqueryparam( cfsqltype="cf_sql_integer", value=1 );
                     writeOutput(",");
@@ -57,7 +58,7 @@ component {
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please Contact the developer</p>
                         <p>Error details: #e.message#</p></center>');
-            return;
+            abort;
         }
         location("../pages/user/bookingConfirmed.cfm", "false");
     }
@@ -89,7 +90,7 @@ component {
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please Contact the developer</p>
                         <p>Error details: #e.message#</p></center>');
-            return;
+            abort;
         }
 
     }

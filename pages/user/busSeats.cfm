@@ -4,6 +4,7 @@
 <cfset bus_id = form.busId>
 <cfset total_seats = form.totalseats>
 <cfset price = form.price>
+<cfset routeId = form.routeId>
 <cfset year = form.year>
 <cfset month = form.month GT 9?form.month:'0#form.month#'>
 <cfset day =  form.day GT 9?form.day:'0#form.day#'>
@@ -45,6 +46,7 @@
                                 <input type="number" name="busId" id="busId" value="#bus_id#" hidden/>
                                 <input type="text" name="seats" id="seats" value="" hidden/>
                                 <input type="text" name="fare" id="fare" value="0" hidden/>
+                                <input type="number" name="routeId" id="routeId" value="#routeId#" hidden/>
                                 <input type="date" name="date" id="date" value="#date#" hidden/>
                                 <input type="hidden" name="csrftoken" value="#csrfToken#" />
                             </cfoutput>

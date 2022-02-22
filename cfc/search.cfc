@@ -65,6 +65,7 @@ component {
                         <input type="hidden" name="busId" value="#bus.bus_id#">
                         <input type="hidden" name="totalseats" value="#bus.no_of_seats#">
                         <input type="hidden" name="price" value="#bus.price#">
+                        <input type="hidden" name="routeId" value="#bus.route_id#">
                         <input type="hidden" name="year" value="#data.selectedDate.year#">
                         <input type="hidden" name="month" value="#data.selectedDate.month#">
                         <input type="hidden" name="day" value="#data.selectedDate.day#">
