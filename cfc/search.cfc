@@ -21,25 +21,25 @@ component {
         try {
 
             if (today == date ) {
-                myQuery = queryExecute(
+                searchList = queryExecute(
                     "SELECT br_bus_routes.id as route_id, bus_id, bus_name, bus_type, no_of_seats, departure_time, arrival_time, price 
                     FROM br_bus_routes INNER JOIN br_buses ON br_bus_routes.bus_id = br_buses.id 
-                    WHERE route_from = :fid AND route_to = :tid AND br_bus_routes.available_today = :f;", 
+                    WHERE route_from = :from_id AND route_to = :to_id AND br_bus_routes.available_today = :today_available;", 
                     {
-                        fid: { cfsqltype: "cf_sql_integer", value: loc_f },
-                        tid: { cfsqltype: "cf_sql_integer", value: loc_t },
-                        f: { cfsqltype: "cf_sql_integer", value: 1 }
+                        from_id: { cfsqltype: "cf_sql_integer", value: loc_f },
+                        to_id: { cfsqltype: "cf_sql_integer", value: loc_t },
+                        today_available: { cfsqltype: "cf_sql_integer", value: 1 }
                     }
                 ); 
             }
             else{
-                myQuery = queryExecute(
+                searchList = queryExecute(
                     "SELECT br_bus_routes.id as route_id, bus_id, bus_name, bus_type, no_of_seats, departure_time, arrival_time, price 
                     FROM br_bus_routes INNER JOIN br_buses ON br_bus_routes.bus_id = br_buses.id 
-                    WHERE route_from = :fid AND route_to = :tid AND FIND_IN_SET(:dt, bus_days);", 
+                    WHERE route_from = :from_id AND route_to = :to_id AND FIND_IN_SET(:dt, bus_days);", 
                     {
-                        fid: { cfsqltype: "cf_sql_integer", value: loc_f },
-                        tid: { cfsqltype: "cf_sql_integer", value: loc_t },
+                        from_id: { cfsqltype: "cf_sql_integer", value: loc_f },
+                        to_id: { cfsqltype: "cf_sql_integer", value: loc_t },
                         dt: { cfsqltype: "cf_sql_varchar", value: date1 },
                         db: { cfsqltype: "cf_sql_integer", value: 1 }
                     }
@@ -50,8 +50,8 @@ component {
 
             list = arrayNew(1);
             
-            for(row in myQuery){
-                myQuery.currentrow = arrayAppend(list, row);
+            for(row in searchList){
+                searchList.currentrow = arrayAppend(list, row);
             }
 
             data.list = list;
