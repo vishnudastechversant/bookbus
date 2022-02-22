@@ -173,6 +173,11 @@ a{
     top: 50px;
     left: 50px;
 }
+#bus-routes{
+    position: absolute;
+    top: 71px;
+    left: 50px;;
+}
 
 #fare{
     position: absolute;
@@ -188,4 +193,29 @@ a{
 
 .bus-book{
     width: 100%;
+}
+.bus-details.bgclr{
+    background-color: #e3e1e1;
+}
+.page-link{
+    border: 1px solid #d74c54 !important;
+}
+a.page-link.active{
+background-color: #d84f57 !important;
+color: white !important;
+}
+.pagination{
+    padding-left: 11px !important;
+}
+.user-detail{
+    height: 500px;
+    width: 50%;
+    border: 1px solid #d84f57;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    position: relative;
+}
+#det{
+    font-size: 32px;
 }
