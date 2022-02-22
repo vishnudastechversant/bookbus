@@ -62,6 +62,7 @@ component {
 		else {
 			session.id = login.id;
 			session.name = login.fullName;
+			session.role = login.user_role;
 			if(login.user_role == 1){
 				location( "../pages/admin", false );
 			}
@@ -74,6 +75,7 @@ component {
     remote function logout() {
 		structDelete(session, "id");
 		structDelete(session, "name");
+		structDelete(session, "role");
 		location( "../pages/user/index.cfm", false );
 	}
 
@@ -85,6 +87,7 @@ component {
 			id = addUser(name = name, emailId = emailId, password = hash(password), loginType = "web", role = role);
 			session.name = name;
 			session.id = id.text;
+			session.role = role;
 			if(role == 1){
 				location( "../pages/admin", false );
 			}
