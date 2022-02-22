@@ -1,5 +1,5 @@
 component { 
-    remote function setBooking(required numeric busId,required string seats,required numeric fare,required string date) { 
+    remote function setBooking(required numeric busId, required string seats, required numeric fare, required numeric routeId, required string date) { 
         if((not isdefined("form.csrfToken")) OR (not CSRFVerifyToken(form.csrfToken))){
             writeOutput('<center><h1>An error occurred</h1>
                         <p>Please Contact the developer</p>
@@ -32,7 +32,7 @@ component {
         }
         try{
             cfquery( name="setBooking", result="bookingResults" ){
-                writeOutput("insert into br_bookings (customer, bus_id, seat_no, fare, paid, status, booked_on) values ");
+                writeOutput("insert into br_bookings (customer, bus_id, seat_no, fare, route_id, paid, status, booked_on) values ");
                 for (i = 1; i <= arrayLen(seatList); i++){
                     if(i> 1 ) { writeOutput(",");}
                     writeOutput("(");
@@ -43,6 +43,8 @@ component {
                     cfqueryparam( cfsqltype="cf_sql_integer", value=seatList[i] );
                     writeOutput(",");
                     cfqueryparam( cfsqltype="cf_sql_integer", value=fare );
+                    writeOutput(",");
+                    cfqueryparam( cfsqltype="cf_sql_integer", value=routeId );
                     writeOutput(",");
                     cfqueryparam( cfsqltype="cf_sql_integer", value=1 );
                     writeOutput(",");
