@@ -1,6 +1,7 @@
+<cfif structKeyExists(url, 'id')>
 <cfinclude  template = "include/header.cfm"  runOnce = "true">
-
-<h1 class="app-page-title">State</h1>
+<cfinvoke component="local.cfc.admin.state" method="selectSingleState" returnvariable="editData" userId=#url.id# >
+<h1 class="app-page-title">Edit State</h1>
 <hr class="mb-4">
 <div class="row g-4 settings-section align-items-center justify-content-center">
    <div class="col-12 col-md-8">
@@ -20,11 +21,14 @@
       </cfoutput>
          <div class="app-card-body">
          <cfset csrftoken= CSRFGenerateToken()/>
-            <form method="post" action="../../cfc/admin/state.cfc?method=addState" class="settings-form">
+            <form method="post" action="../../cfc/admin/state.cfc?method=updateState" class="settings-form">
                <input name="csrftoken" type="hidden" value="#csrfToken#">
                <div class="mb-3">
-                  <label for="state_name" class="form-label">State Name</label>
-                  <input type="text" name="state_name" class="form-control" required>
+                    <cfoutput>
+                        <label for="state_name" class="form-label">State Name</label>
+                        <input type="text" name="state_name" class="form-control" value="#editData.state#" required>
+                        <input type="hidden" name="state_id" value="#editData.id#" />
+                    </cfoutput>
                </div>
                <button type="submit" class="btn app-btn-primary" >Save</button>
             </form>
@@ -59,4 +63,7 @@
    </div>
 </div>
 
-<cfinclude  template = "include/footer.cfm"  runOnce = "true">                    
+<cfinclude  template = "include/footer.cfm"  runOnce = "true"> 
+<cfelse>
+    <cflocation url="state.cfm"/>
+</cfif>
