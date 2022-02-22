@@ -189,3 +189,11 @@ a{
 .bus-book{
     width: 100%;
 }
+
+#bus-message{
+    position: absolute;
+    top: 20px;
+    left: 30%;
+    font-size: 30px;
+    color: #ff0d0d;
+}
