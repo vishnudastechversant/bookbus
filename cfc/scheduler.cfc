@@ -16,6 +16,7 @@ component displayname="scheduler"{
                             if(arrayLen(bookingdata) == 1)
                                 {
                                     resultset       =  bookingdata[1];
+                                    customer        =  resultset.customer;
                                     reminder        =  'Reminder for your travel with #resultset.bus_name#';
                                     message         =  'Your reminder for travel with #resultset.bus_name#, Your bus starts at #resultset.departure#  and will be reaching your destination at #resultset.arrival#. Have a safe journey.';
                                     email 	        =  resultset.email;
@@ -23,6 +24,11 @@ component displayname="scheduler"{
                                     mail_services.send();
                                 }
                         })
+
+                        cfschedule(
+                                    action    = "delete", 
+                                    task      = "BookingReminder#customer#"
+                                );
                     }
             }
         }
