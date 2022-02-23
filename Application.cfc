@@ -4,9 +4,6 @@ component {
     this.datasource = "busbooking";
     this.sessionManagement  = true;
     this.sessionTimeout = CreateTimeSpan(0, 0, 30, 0);
-    // this.ormEnabled         = true;
-    // this.ormSettings        = { logsql : true, datasource = "busbooking", cfclocation = ["entity"] };
-    // this.invokeImplicitAccessor = true;
     this.mappings["/local"] = getDirectoryFromPath(getCurrentTemplatePath());
 
     function onRequestStart(requestname){ 
@@ -20,7 +17,11 @@ component {
             location("/bookbus/pages/admin/index.cfm",false);
         } 
         if(!structKeyExists(session, "id") ){
-            if(findNoCase("/bookbus/cfc/booking.cfc",requestname) > 0){
+            if(findNoCase("/bookbus/cfc/booking.cfc",requestname) > 0 ||
+            findNoCase("/bookbus/pages/user/bookingConfirmed.cfm",requestname) > 0||
+            findNoCase("/bookbus/pages/user/bookingHistory.cfm",requestname) > 0 ||
+            findNoCase("/bookbus/pages/user/upcommingBooking.cfm",requestname) > 0 || 
+            findNoCase("/bookbus/pages/user/profile.cfm",requestname) > 0){
                 writeOutput('<center><h1>Login Required</h1>
                 <p>Please Login to yout account</p></center>');
                 abort;
