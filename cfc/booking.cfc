@@ -121,7 +121,7 @@ component {
                 }
             );
             seats_taken = "#fetchBookedSeats.seats#";
-             cfloop(query = fetchBookedSeats, startRow = "2" ) {
+            cfloop(query = fetchBookedSeats, startRow = "2" ) {
                  seats_taken="#seats_taken#,#seats#"
             }
             
