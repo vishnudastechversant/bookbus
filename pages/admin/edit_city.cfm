@@ -1,6 +1,7 @@
+<cfif structKeyExists(url, 'id')>
 <cfinclude  template = "include/header.cfm"  runOnce = "true">
-
-<h1 class="app-page-title">City</h1>
+<cfinvoke component="local.cfc.admin.city" method="selectSingleCity" returnvariable="editData" userId=#url.id# >
+<h1 class="app-page-title">Edit City</h1>
 <hr class="mb-4">
 <div class="row g-4 settings-section align-items-center justify-content-center">
    <div class="col-12 col-md-8">
@@ -20,7 +21,7 @@
       </cfoutput>
          <div class="app-card-body">
          <cfset csrftoken= CSRFGenerateToken()/>
-            <form method="post" action="../../cfc/admin/city.cfc?method=addCity" class="settings-form">
+            <form method="post" action="../../cfc/admin/city.cfc?method=updateCity" class="settings-form">
             <input name="csrftoken" type="hidden" value="#csrfToken#">
                <cfinvoke component="local.cfc.admin.state"  method="getState" returnvariable="allState">
                 <div class="mb-3">
@@ -28,13 +29,16 @@
                   <select class="form-control" name="state_id">
                      <option value="">--select--</option>
                      <cfoutput query="allState">
-                        <option value="#allState.id#">#allState.state#</option>
+                        <option <cfif editData.state_id eq allState.id>selected</cfif> value="#allState.id#">#allState.state#</option>
                      </cfoutput>  
                   </select>
                 </div>
                <div class="mb-3">
+                <cfoutput>
                   <label for="setting-input-2" class="form-label">City Name</label>
-                  <input type="text" name="city" class="form-control" id="setting-input-2" required>
+                  <input type="text" name="city" class="form-control" id="setting-input-2" value="#editData.city#" required>
+                  <input type="hidden" value="#editData.id#" name="city_id">
+                </cfoutput>
                </div>
                
                <button type="submit" class="btn app-btn-primary" >Save</button>
@@ -72,4 +76,7 @@
    </div>
 </div>
 
-<cfinclude  template = "include/footer.cfm"  runOnce = "true">                    
+<cfinclude  template = "include/footer.cfm"  runOnce = "true">      
+<cfelse>
+    <cflocation url="city.cfm"/>
+</cfif>
