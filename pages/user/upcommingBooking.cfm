@@ -22,6 +22,7 @@
                         <p id="bus-route"><b>Date: #DateFormat(parsedatetime(booked_on),'dd/mm/yyyy')#</b></p>
                         <p id="bus-name">Bus Name :#bus_name#</p>
                         <p id="bus-routes"><b>From </b> #cityfrom# <b>To </b>#cityto#</p>
+                        <p id="seatz">Seats Selected :#seats#</p>
                         <p id="fare">Fare : Rs #fare#</p>
                         <p id="reach-time">Departure Time : #timeFormat(departure_time,"hh:mm tt")#/Arrival Time :#timeFormat(arrival_time,"hh:mm tt")#</p>
             </div>
