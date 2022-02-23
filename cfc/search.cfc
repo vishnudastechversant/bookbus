@@ -22,10 +22,10 @@ component {
                 searchList = queryExecute(
                     "SELECT br_bus_routes.id as route_id, bus_id, bus_name, bus_type, no_of_seats, departure_time, arrival_time, price 
                     FROM br_bus_routes INNER JOIN br_buses ON br_bus_routes.bus_id = br_buses.id 
-                    WHERE route_from = :from_id AND route_to = :to_id AND br_bus_routes.available_today = :today_available;", 
+                    WHERE route_from = :location_from AND route_to = :location_to AND br_bus_routes.available_today = :today_available;", 
                     {
-                        from_id: { cfsqltype: "cf_sql_integer", value: loc_f },
-                        to_id: { cfsqltype: "cf_sql_integer", value: loc_t },
+                        location_from: { cfsqltype: "cf_sql_integer", value: loc_f },
+                        location_to: { cfsqltype: "cf_sql_integer", value: loc_t },
                         today_available: { cfsqltype: "cf_sql_integer", value: 1 }
                     }
                 ); 
@@ -34,16 +34,16 @@ component {
                 searchList = queryExecute(
                     "SELECT br_bus_routes.id as route_id, bus_id, bus_name, bus_type, no_of_seats, departure_time, arrival_time, price 
                     FROM br_bus_routes INNER JOIN br_buses ON br_bus_routes.bus_id = br_buses.id 
-                    WHERE route_from = :from_id AND route_to = :to_id AND FIND_IN_SET(:dt, bus_days);", 
+                    WHERE route_from = :location_from AND route_to = :location_to AND FIND_IN_SET(:dt, bus_days);", 
                     {
-                        from_id: { cfsqltype: "cf_sql_integer", value: loc_f },
-                        to_id: { cfsqltype: "cf_sql_integer", value: loc_t },
+                        location_from: { cfsqltype: "cf_sql_integer", value: loc_f },
+                        location_to: { cfsqltype: "cf_sql_integer", value: loc_t },
                         dt: { cfsqltype: "cf_sql_varchar", value: date1 },
                         db: { cfsqltype: "cf_sql_integer", value: 1 }
                     }
                 );
             }
-            recordCount = myQuery.recordCount;            
+            recordCount = searchList.recordCount;            
             if(recordCount == 0){
                 writeOutput('
                     <div class="bus-details">
@@ -54,8 +54,8 @@ component {
             else{
                 data.status 	= 	'ok';
                 list = arrayNew(1);                
-                for(row in myQuery){
-                    myQuery.currentrow = arrayAppend(list, row);
+                for(row in searchList){
+                    searchList.currentrow = arrayAppend(list, row);
                 }
                 data.list = list;
                 data.selectedDate.year	= DateFormat(date,"y");
