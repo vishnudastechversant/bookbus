@@ -11,6 +11,12 @@ component {
     function onRequestStart(requestname){ 
         if(findNoCase("/bookbus/index.cfm",requestname) > 0){
             location("/bookbus/pages/user/index.cfm",false);
+        }  
+        if(findNoCase("/bookbus/pages/admin",requestname) > 0 && structKeyExists(session, "role") && session.role == 2){
+            location("/bookbus/pages/user/index.cfm",false);
+        }   
+        if(findNoCase("/bookbus/pages/user",requestname) > 0 && structKeyExists(session, "role") && session.role == 1){
+            location("/bookbus/pages/admin/index.cfm",false);
         } 
         if(!structKeyExists(session, "id") ){
             if(findNoCase("/bookbus/cfc/booking.cfc",requestname) > 0){
