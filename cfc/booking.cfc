@@ -84,7 +84,7 @@ component {
                 abort;
             }
         
-        //location("../pages/user/bookingConfirmed.cfm", "false");
+        location("../pages/user/bookingConfirmed.cfm", "false");
     }
 
     remote function getBookedSeats(required numeric busId, required string date){
