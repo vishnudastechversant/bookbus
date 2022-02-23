@@ -30,42 +30,83 @@ component {
                         <p>Error details: Seat Selected Was Already Booked</p></center>');
             abort;
         }
+        
         try{
-            cfquery( name="setBooking", result="bookingResults" ){
-                writeOutput("insert into br_bookings (customer, bus_id, seat_no, fare, route_id, paid, status, booked_on) values ");
-                for (i = 1; i <= arrayLen(seatList); i++){
-                    if(i> 1 ) { writeOutput(",");}
-                    writeOutput("(");
-                    cfqueryparam( cfsqltype="cf_sql_integer", value=session.id );
-                    writeOutput(",");
-                    cfqueryparam( cfsqltype="cf_sql_integer", value=busId );
-                    writeOutput(",");
-                    cfqueryparam( cfsqltype="cf_sql_integer", value=seatList[i] );
-                    writeOutput(",");
-                    cfqueryparam( cfsqltype="cf_sql_integer", value=fare );
-                    writeOutput(",");
-                    cfqueryparam( cfsqltype="cf_sql_integer", value=routeId );
-                    writeOutput(",");
-                    cfqueryparam( cfsqltype="cf_sql_integer", value=1 );
-                    writeOutput(",");
-                    cfqueryparam( cfsqltype="cf_sql_integer", value=1 );
-                    writeOutput(",");
-                    cfqueryparam( cfsqltype="cf_sql_timestamp", value=LSParseDateTime(date,"English (UK)"));
-                    writeOutput(")");
-                }
+                cfquery( name="setBooking", result="bookingResults" )
+                    {
+                        writeOutput("insert into br_bookings (customer, bus_id, seat_no, fare, route_id, paid, status, booked_on) values ");
+                        for (i = 1; i <= arrayLen(seatList); i++)
+                            {
+                                if(i> 1 ) { writeOutput(",");}
+                                writeOutput("(");
+                                cfqueryparam( cfsqltype="cf_sql_integer", value=session.id );
+                                writeOutput(",");
+                                cfqueryparam( cfsqltype="cf_sql_integer", value=busId );
+                                writeOutput(",");
+                                cfqueryparam( cfsqltype="cf_sql_integer", value=seatList[i] );
+                                writeOutput(",");
+                                cfqueryparam( cfsqltype="cf_sql_integer", value=fare );
+                                writeOutput(",");
+                                cfqueryparam( cfsqltype="cf_sql_integer", value=routeId );
+                                writeOutput(",");
+                                cfqueryparam( cfsqltype="cf_sql_integer", value=1 );
+                                writeOutput(",");
+                                cfqueryparam( cfsqltype="cf_sql_integer", value=1 );
+                                writeOutput(",");
+                                cfqueryparam( cfsqltype="cf_sql_timestamp", value=LSParseDateTime(date,"English (UK)"));
+                                writeOutput(")");
+                            }
+                    }
+
+                    /*Scheduler Code*/
+                    route_details = getRouteDetails(routeId);
+                    if(arrayLen(route_details) == 1)
+                        {
+                            arrival_time = route_details[1].arrival_time;
+                            booking_Date = date;
+
+                            cfschedule(
+                                        action    = "update", 
+                                        task      = "BookingReminder#session.id#",
+                                        operation = "HTTPRequest",
+                                        startDate = date,
+                                        startTime = arrival_time,
+                                        url       = 'http://127.0.0.1:8500/bookbus/cfc/scheduler.cfc?method=bookingReminder&BookingID=#bookingResults.generatedKey#',
+                                        interval  = 'once'
+                                    );
+                        }
             }
-        } catch (any e) {
-            writeOutput('<center><h1>An error occurred</h1>
-                        <p>Please Contact the developer</p>
-                        <p>Error details: #e.message#</p></center>');
-            abort;
-        }
+        catch (any e) 
+            {
+                writeOutput('<center><h1>An error occurred</h1>
+                            <p>Please Contact the developer</p>
+                            <p>Error details: #e.message#</p></center>');
+                abort;
+            }
+        
         location("../pages/user/bookingConfirmed.cfm", "false");
     }
 
     remote function getBookedSeats(required numeric busId, required string date){
         bookedSeats = bookedSeats(busId,date);
         return bookedSeats;
+    }
+
+    private function getRouteDetails(routeid){
+        try{
+
+            result = queryExecute("SELECT * FROM br_bus_routes WHERE id = :routeid",
+                                    {
+                                        routeid: { cfsqltype: "cf_sql_integer", value: routeid }
+                                    },
+                                    {
+                                        returntype = "array"
+                                    });
+            return result;                        
+        }
+        catch(any e){
+            return 'error';
+        }
     }
 
     private function bookedSeats(required numeric busId, required string date){
