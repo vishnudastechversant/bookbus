@@ -34,12 +34,13 @@ component {
                 searchList = queryExecute(
                     "SELECT br_bus_routes.id as route_id, bus_id, bus_name, bus_type, no_of_seats, departure_time, arrival_time, price 
                     FROM br_bus_routes INNER JOIN br_buses ON br_bus_routes.bus_id = br_buses.id 
-                    WHERE route_from = :location_from AND route_to = :location_to AND FIND_IN_SET(:dt, bus_days);", 
+                    WHERE route_from = :location_from AND route_to = :location_to AND FIND_IN_SET(:dt, bus_days) OR daily_bus = :dailybus;", 
                     {
                         location_from: { cfsqltype: "cf_sql_integer", value: loc_f },
                         location_to: { cfsqltype: "cf_sql_integer", value: loc_t },
                         dt: { cfsqltype: "cf_sql_varchar", value: date1 },
-                        db: { cfsqltype: "cf_sql_integer", value: 1 }
+                        db: { cfsqltype: "cf_sql_integer", value: 1 },
+                        dailybus: { cfsqltype: "cf_sql_integer", value: 1 }
                     }
                 );
             }
