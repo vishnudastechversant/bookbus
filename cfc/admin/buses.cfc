@@ -396,6 +396,8 @@ component displayname="buses"{
 									       bus.id = route.bus_id	    
 									WHERE 
 									       bus.created_by = :userid
+									GROUP BY 
+										   bus.id
        									",
        									{userid: { cfsqltype: "cf_sql_integer", value: userid }});
 				return result;
