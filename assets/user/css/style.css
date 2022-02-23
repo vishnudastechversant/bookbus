@@ -226,3 +226,8 @@ color: white !important;
     font-size: 30px;
     color: #ff0d0d;
 }
+#seatz{
+    position: absolute;
+    right: 10px;
+    margin-top: 27px;
+}
