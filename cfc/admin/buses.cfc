@@ -30,7 +30,7 @@ component displayname="buses"{
 					arrival_time        =   form.arrival_time;
 					bus_price           =   form.bus_price;
 
-					created_by			=	1;
+					created_by			=	session.id;
 					insert_bus 			=	addToBus(bus_name, bus_type, layout_type, available_today, seat_count, created_by);
 					
 					if(insert_bus != 'error')
@@ -98,7 +98,21 @@ component displayname="buses"{
 				}
 		}
 
-	remote function editbus()
+	remote function editbus(required numeric busid,
+							required string bus_name,
+							required string bus_type,
+							required numeric layout_type,
+							required numeric available_today,
+							required numeric seat_count,
+							required numeric route_from,
+							required numeric route_to,
+							required string main_route,
+							required string daily_bus,
+							required string bus_days,
+							required string route_available,
+							required string departure_time,
+							required string arrival_time,
+							required numeric bus_price)
 		{
 			form_values		=  structNew();
 			
@@ -110,33 +124,31 @@ component displayname="buses"{
 					location('../../pages/admin/listbus.cfm');
 				}
 
-			if(not structKeyExists(form, 'busid'))
+			if(!isNumeric(busid) || busid < 1 )
 				{
 					Session.admin_status  =  'error';
 					Session.admin_message =  'Not a valid request';
 					Session.admin_form 	  =  form_values;
 					location('../../pages/admin/listbus.cfm');
 				}	
-			
-			if(structKeyExists(form, 'bus_name') AND structKeyExists(form, 'bus_type')  AND structKeyExists(form, 'layout_type') AND structKeyExists(form, 'available_today') AND structKeyExists(form, 'seat_count') AND structKeyExists(form, 'route_from') AND structKeyExists(form, 'route_to') AND structKeyExists(form, 'main_route') AND structKeyExists(form, 'daily_bus') AND structKeyExists(form, 'bus_days') AND structKeyExists(form, 'route_available') AND structKeyExists(form, 'departure_time') AND structKeyExists(form, 'arrival_time') AND structKeyExists(form, 'bus_price') )
-				{
-					bus_name            =   form.bus_name;
-					bus_type            =   form.bus_type;
-					layout_type         =   form.layout_type;
-					available_today     =   form.available_today;
-					seat_count          =   form.seat_count;
-					route_from          =   form.route_from;
-					route_to            =   form.route_to;
-					main_route          =   form.main_route;
-					daily_bus           =   form.daily_bus;
-					bus_days            =   form.bus_days;
-					route_available     =   form.route_available;
-					departure_time      =   form.departure_time;
-					arrival_time        =   form.arrival_time;
-					bus_price           =   form.bus_price;
-					bus_id              =   form.busid;
+				
+					bus_name            =   bus_name;
+					bus_type            =   bus_type;
+					layout_type         =   layout_type;
+					available_today     =   available_today;
+					seat_count          =   seat_count;
+					route_from          =   route_from;
+					route_to            =   route_to;
+					main_route          =   main_route;
+					daily_bus           =   daily_bus;
+					bus_days            =   bus_days;
+					route_available     =   route_available;
+					departure_time      =   departure_time;
+					arrival_time        =   arrival_time;
+					bus_price           =   bus_price;
+					bus_id              =   busid;
 
-					created_by			=	1;
+					created_by			=	session.id;
 					update_bus 			=	editToBus(bus_id, bus_name, bus_type, layout_type, available_today, seat_count, created_by);
 					
 					if(update_bus != 'error')
@@ -159,48 +171,25 @@ component displayname="buses"{
 						}
 					else 
 						{
-							form_values["bus_name"]            =   form.bus_name;
-							form_values["bus_type"]            =   form.bus_type;
-							form_values["layout_type"]         =   form.layout_type;
-							form_values["available_today"]     =   form.available_today;
-							form_values["seat_count"]          =   form.seat_count;
-							form_values["route_from"]          =   form.route_from;
-							form_values["route_to"]            =   form.route_to;
-							form_values["main_route"]          =   form.main_route;
-							form_values["daily_bus"]           =   form.daily_bus;
-							form_values["bus_days"]            =   form.bus_days;
-							form_values["route_available"]     =   form.route_available;
-							form_values["departure_time"]      =   form.departure_time;
-							form_values["arrival_time"]        =   form.arrival_time;
+							form_values["bus_name"]            =   bus_name;
+							form_values["bus_type"]            =   bus_type;
+							form_values["layout_type"]         =   layout_type;
+							form_values["available_today"]     =   available_today;
+							form_values["seat_count"]          =   seat_count;
+							form_values["route_from"]          =   route_from;
+							form_values["route_to"]            =   route_to;
+							form_values["main_route"]          =   main_route;
+							form_values["daily_bus"]           =   daily_bus;
+							form_values["bus_days"]            =   bus_days;
+							form_values["route_available"]     =   route_available;
+							form_values["departure_time"]      =   departure_time;
+							form_values["arrival_time"]        =   arrival_time;
 
 							Session.admin_status  =  'error';
 							Session.admin_message =  'Error. Something went wrong!';
 							Session.admin_form 	  =  form_values;
 							location('../../pages/admin/editbus.cfm?busid=#bus_id#');
-						}					
-				}
-			else 
-				{
-
-					form_values["bus_name"]            =   form.bus_name;
-					form_values["bus_type"]            =   form.bus_type;
-					form_values["layout_type"]         =   form.layout_type;
-					form_values["available_today"]     =   form.available_today;
-					form_values["seat_count"]          =   form.seat_count;
-					form_values["route_from"]          =   form.route_from;
-					form_values["route_to"]            =   form.route_to;
-					form_values["main_route"]          =   form.main_route;
-					form_values["daily_bus"]           =   form.daily_bus;
-					form_values["bus_days"]            =   form.bus_days;
-					form_values["route_available"]     =   form.route_available;
-					form_values["departure_time"]      =   form.departure_time;
-					form_values["arrival_time"]        =   form.arrival_time;
-
-					Session.admin_status  =  'error';
-					Session.admin_message =  'Please enter all mandatory fields';
-					Session.admin_form 	  =  form_values;
-					location('../../pages/admin/editbus.cfm?busid=#bus_id#');
-				}
+						}
 		}
 
 	private function addToBus(bus_name, bus_type, layout_type, available_today, seat_count, created_by)
@@ -396,6 +385,8 @@ component displayname="buses"{
 									       bus.id = route.bus_id	    
 									WHERE 
 									       bus.created_by = :userid
+									GROUP BY 
+										   bus.id
        									",
        									{userid: { cfsqltype: "cf_sql_integer", value: userid }});
 				return result;

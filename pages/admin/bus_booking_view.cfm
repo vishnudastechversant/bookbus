@@ -13,9 +13,10 @@
                      <th class="cell">Sl</th>
                      <th class="cell">Bus Name</th>
                      <th class="cell">Customer Name</th>
-                     <th class="cell">Seat Number</th>
+                     <th class="cell">Number of Seat</th>
+                     <th class="cell">Seat numbers</th>
                      <th class="cell">Booking Status</th>
-                     <th class="cell">Amount</th>
+                     <th class="cell">Total Amount</th>
                      <th class="cell">Payment Status</th>
                      <th class="cell">Date</th>
                   </tr>
@@ -28,9 +29,10 @@
                         <td class="cell">#counter++#</td>
                         <td class="cell">#listData.bus_name#</td>
                         <td class="cell">#listData.fullname#</td>
-                        <td class="cell">#listData.seat_no#</td>
+                        <td class="cell">#listData.bookcount#</td>
+                        <td class="cell">#listData.seatnumber#</td>
                         <td class="cell"><cfif listData.status eq 0><span class="badge bg-warning">Pending</span><cfelseif listData.status eq 1><span class="badge bg-success">Success</span><cfelseif listData.status eq 2><span class="badge bg-danger">Booking Cancelled</span></cfif></td>
-                        <td class="cell">#listData.fare#</td>
+                        <td class="cell">#listData.totalamount#</td>
                         <td class="cell"><cfif listData.paid eq 1><span class="badge bg-success">Paid</span><cfelseif listData.paid eq 0><span class="badge bg-danger">Unpaid</span></cfif></td>
                         <td class="cell">#DateFormat(parsedatetime(listData.booked_on),'dd/mm/yyyy')#</td>
                     </tr>
