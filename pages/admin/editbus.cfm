@@ -135,7 +135,7 @@
                                     <select name="route_to" class="form-control" id="route-to">
                                        <option <cfif sel_route_to EQ ''>selected="selected"</cfif> disabled value="">Select a city</option>
                                        <cfloop query="citydata">
-                                         <option <cfif sel_route_from EQ citydata.id>selected="selected"</cfif> value="#citydata.id#">#citydata.city#</option>
+                                         <option <cfif sel_route_to EQ citydata.id>selected="selected"</cfif> value="#citydata.id#">#citydata.city#</option>
                                        </cfloop>
                                     </select>
                                     <div class="invalid-feedback">
