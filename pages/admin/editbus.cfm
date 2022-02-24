@@ -22,11 +22,11 @@
             <cfset cityObj  = createObject("component", "local.cfc.admin.buses")>
             <cfset citydata = cityObj.getCity() />
             <cfset busObj   = createObject("component", "local.cfc.admin.buses")>
-            <cfset busData  = busObj.getBusesById(url.busid,1) />
+            <cfset busData  = busObj.getBusesById(url.busid,session.id) />
             <cfif arrayLen(busData) EQ 1>
                <cfset bus_data = busData[1] />
             <cfelse>
-               <cflocation url="listbus.cfm" />   
+               <cflocation url="listbus.cfm" addtoken="false" />   
             </cfif>
             <cfoutput>
                <form class="addbus-form needs-validation" method="POST" action="../../cfc/admin/buses.cfc?method=editbus" name="addbus-form" id="addbus-form" onsubmit="return addSubmit(event)" novalidate>
@@ -252,7 +252,6 @@
                                  </div>
                               </div>
                            </div>
-                           <!--<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
                         </div>
                      </div>
                   </div>
