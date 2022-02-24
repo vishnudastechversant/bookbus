@@ -10,8 +10,11 @@ component {
     }
 
     remote function busReport(bus_id,date){
-         report = queryExecute("SELECT * FROM br_bookings INNER JOIN br_user ON br_bookings.customer=br_user.id WHERE br_bookings.bus_id = #bus_id#", {});
+         report = queryExecute("SELECT * FROM br_bookings INNER JOIN br_user ON br_bookings.customer=br_user.id WHERE br_bookings.bus_id = :busId AND DATE(br_bookings.booked_on) = :bookDate", {
+            busId: { cfsqltype: "cf_sql_integer", value: bus_id},
+            bookDate: { cfsqltype: "cf_sql_date", value: DateFormat(date,"yyy-mm-dd H:mm:ss")}
+         });
          Session.bookingrepo  =  report;
          location('../../pages/admin/bus_report.cfm');
     }
-}        
+}      
