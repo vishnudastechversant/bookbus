@@ -30,7 +30,7 @@ component displayname="buses"{
 					arrival_time        =   form.arrival_time;
 					bus_price           =   form.bus_price;
 
-					created_by			=	1;
+					created_by			=	session.id;
 					insert_bus 			=	addToBus(bus_name, bus_type, layout_type, available_today, seat_count, created_by);
 					
 					if(insert_bus != 'error')
@@ -148,7 +148,7 @@ component displayname="buses"{
 					bus_price           =   bus_price;
 					bus_id              =   busid;
 
-					created_by			=	1;
+					created_by			=	session.id;
 					update_bus 			=	editToBus(bus_id, bus_name, bus_type, layout_type, available_today, seat_count, created_by);
 					
 					if(update_bus != 'error')
