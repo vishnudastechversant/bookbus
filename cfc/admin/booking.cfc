@@ -17,4 +17,9 @@ component {
          Session.bookingrepo  =  report;
          location('../../pages/admin/bus_report.cfm');
     }
+
+    remote function logout(){
+         StructClear(Session);
+          location('../../pages/user/index.cfm');
+    }
 }      
