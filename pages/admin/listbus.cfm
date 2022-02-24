@@ -16,7 +16,7 @@
 				    </div>
 			    </div>
 			   	<cfset busObj  = createObject("component", "local.cfc.admin.buses")>
-            	<cfset busData = busObj.getBuses(1) />	
+            	<cfset busData = busObj.getBuses(session.id) />	
             	<cfoutput>
 	               <cfif structKeyExists(Session, 'admin_status') AND len(trim(Session.admin_status))  GT 0 >
 	                     <cfif Session.admin_status EQ 'success'>
