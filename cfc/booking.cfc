@@ -1,34 +1,31 @@
 component { 
     remote function setBooking(required numeric busId, required string seats, required numeric fare, required numeric routeId, required string date) { 
         if((not isdefined("form.csrfToken")) OR (not CSRFVerifyToken(form.csrfToken))){
-            writeOutput('<center><h1>An error occurred</h1>
-                        <p>Please Contact the developer</p>
-                        <p>Error details: Invalid Request</p></center>');
-            abort;
+            session.alert_status = 'error';
+            session.alert_message = 'Invalid Request';
+            location("../pages/user/index.cfm", "false");
         }
         if(seats == ""){
-            writeOutput('<center><h1>An error occurred</h1>
-                        <p>Please select your seats</p>
-                        <p>Error details: No seat Selected</p></center>');
+            session.alert_status = 'error';
+            session.alert_message = 'No seat Selected';
+            location("../pages/user/index.cfm", "false");
             abort;
         }
         if(!isNumeric(busId) || busId < 1 ){
-            writeOutput('<center><h1>An error occurred</h1>
-                        <p>Please select your seats</p>
-                        <p>Error details: No seat Selected</p></center>');
-            abort;
+            session.alert_status = 'error';
+            session.alert_message = 'No Bus Selected';
+            location("../pages/user/index.cfm", "false");
         }
-        seatsFromQuery = listToArray(bookedSeats(busId,date));
+        seatsFromQuery = listToArray(getBookedSeats(busId,date));
         seatList = listToArray(seats);
         
         seatAlreadyTaken = seatList.filter(function(seat){
             return seatsFromQuery.contains(seat);
         });
         if(arrayLen(seatAlreadyTaken) GTE 1){
-            writeOutput('<center><h1>An error occurred</h1>
-                        <p>Seats you choose was already booked. Please select your seats again</p>
-                        <p>Error details: Seat Selected Was Already Booked</p></center>');
-            abort;
+            session.alert_status = 'error';
+            session.alert_message = 'Seats you choose was already booked. Please select your seats again';
+            location("../pages/user/index.cfm", "false");
         }
         
         try{
@@ -78,21 +75,15 @@ component {
             }
         catch (any e) 
             {
-                writeOutput('<center><h1>An error occurred</h1>
-                            <p>Please Contact the developer</p>
-                            <p>Error details: #e.message#</p></center>');
-                abort;
+                session.alert_status = 'error';
+                session.alert_message = '#e.message#';
+                location("../pages/user/index.cfm", "false");
             }
         
         location("../pages/user/bookingConfirmed.cfm", "false");
     }
 
-    remote function getBookedSeats(required numeric busId, required string date){
-        bookedSeats = bookedSeats(busId,date);
-        return bookedSeats;
-    }
-
-    private function getRouteDetails(routeid){
+    public function getRouteDetails(routeid){
         try{
 
             result = queryExecute("SELECT * FROM br_bus_routes WHERE id = :routeid",
@@ -109,7 +100,7 @@ component {
         }
     }
 
-    private function bookedSeats(required numeric busId, required string date){
+    public function getBookedSeats(required numeric busId, required string date){
         try{
             fetchBookedSeats = queryExecute(
                 "SELECT bs.seat_no as seats FROM br_bookings as bs
@@ -128,10 +119,9 @@ component {
             return seats_taken; 
         }
         catch (any e) {
-            writeOutput('<center><h1>An error occurred</h1>
-                        <p>Please Contact the developer</p>
-                        <p>Error details: #e.message#</p></center>');
-            abort;
+            session.alert_status = 'error';
+            session.alert_message = '#e.message#';
+            location("../pages/user/index.cfm", "false");
         }
 
     }

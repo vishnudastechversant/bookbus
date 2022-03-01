@@ -68,6 +68,5 @@
 
         document.getElementById("cPassword").addEventListener("change", checkPassword);
     </script>
-
 </body>
 </html>
