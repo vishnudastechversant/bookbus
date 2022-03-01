@@ -1,4 +1,7 @@
-
+    <cfif structKeyExists(session, 'alert_status') AND len(trim(session.alert_status))  GT 0 >
+        <cfset structDelete(session, "alert_status")>
+        <cfset structDelete(session, "alert_message")>
+    </cfif>
     <script>
         var today = new Date().toISOString().split('T')[0];
         document.getElementsByName("date")[0].setAttribute('min', today);
@@ -176,6 +179,13 @@
                 document.getElementById("loc_id_to").value   = from_id;
             }
         }
+    </script>
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(function(alert) {
+                alert.classList.add('d-none');
+            });
+        }, 3000);
     </script>
 </body>
 </html>

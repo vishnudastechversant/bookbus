@@ -72,6 +72,14 @@
             </cfif>
         </div>
     </div>  
+<!---     alerts     --->
+    <cfoutput>
+        <cfif structKeyExists(session, 'alert_status') AND len(trim(session.alert_status))  GT 0 >
+            <div class="alert alert-<cfif session.alert_status EQ 'success'>success<cfelseif session.alert_status EQ 'error'>danger</cfif> " role="alert">
+                #session.alert_message#
+            </div>
+        </cfif>
+    </cfoutput>
 
     <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
