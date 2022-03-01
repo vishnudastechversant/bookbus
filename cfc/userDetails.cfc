@@ -16,7 +16,6 @@ component {
                 startrecord: { cfsqltype: "cf_sql_integer", value: pageno}
             }
         );
-    
         return book_list;
     }
 

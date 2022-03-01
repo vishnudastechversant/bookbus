@@ -1,18 +1,23 @@
 component { 
-    remote function locFunction(required string loc,sec) { 
-        cfquery( name="loclist",result="xResult" ) { 
-            writeOutput("SELECT id,city FROM br_city
-            WHERE city LIKE "); cfqueryparam( cfsqltype="cf_sql_varchar", VALUE=loc&'%');
+    remote function locFunction(required string loc,sec) returnFormat="JSON" {
+        try {
+            loclist = queryExecute(
+                "SELECT id, city FROM br_city 
+                 WHERE city Like :location;", 
+                {
+                    location: { cfsqltype: "cf_sql_varchar", value: loc&'%' }
+                }
+            ); 
+            return loclist;
         }
-       //return loclist;
-        cfoutput(QUERY="loclist" ) {
-                writeOutput("<li class=""list-group-item"" onclick=""listHandle('#id#','#city#','#sec#')"">#city#</li>"
-            );
+        catch(Exception e){
+            data.status 	= 	'error';
+            data.message	=	e.message;
         }
     }
 
     remote function Listfunction(required string loc_f,loc_t,date) { 
-        data = structNew();
+        data   = structNew();
         date1  = DateFormat(date,"e");
         today  = DateFormat(Now(),"yyy-mm-dd");
         list   ="";
