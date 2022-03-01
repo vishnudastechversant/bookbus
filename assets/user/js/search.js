@@ -1,4 +1,3 @@
-
 function handleLocation(loc,sec){
     var url    = "../../cfc/search.cfc";
     var params = "method=locFunction&loc="+loc+"&sec="+sec;
@@ -7,17 +6,19 @@ function handleLocation(loc,sec){
     xhr.send();
     xhr.onreadystatechange = function()
     {
-        var res = JSON.parse(xhr.responseText);
-            for(i=0;i<res['DATA'].length;i++){
-                var curr = res['DATA'][i];
-                if(curr !== ""){
-                    var html_cont = html_cont+"<li class=list-group-item onclick=listHandle("+curr[0]+",'"+curr[1]+"','"+sec+"')>"+curr[1]+" </li>";
-                }
+        if(xhr.readyState == 4){
+            if(xhr.status == 200){
+                var res = JSON.parse(xhr.responseText);
+                console.log(res);
+                    for(i=0;i<res.length;i++){
+                        var curr = res[i];
+                            var html_cont = html_cont+"<li class=list-group-item onclick=listHandle("+curr['id']+",'"+curr['city']+"','"+sec+"')>"+curr['city']+" </li>";
+                    }
             }
+        }
         if(sec === "from"){
             if(document.getElementById("from").value != ""){
-                    document.getElementById("loc-list").innerHTML = html_cont;
-                    
+                    document.getElementById("loc-list").innerHTML = html_cont;                
             }           
             else{
                 document.getElementById("loc-list").innerHTML = "";
@@ -33,7 +34,6 @@ function handleLocation(loc,sec){
         }
     }
 }
-
 //To handle select location
 function listHandle(id,name,sec) {
     if(sec ==="from"){
@@ -48,7 +48,6 @@ function listHandle(id,name,sec) {
     }
 
 }
-
 
 //To handle form validation
 
