@@ -34,9 +34,7 @@ function handleLocation(loc,sec){
     }
 }
 
-
 //To handle select location
-
 function listHandle(id,name,sec) {
     if(sec ==="from"){
         document.getElementById("from").value = name;
