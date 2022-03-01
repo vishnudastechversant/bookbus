@@ -57,10 +57,9 @@ component {
 		variables.recordCount = loginResult.recordCount;
 		
 		if ( recordCount == 0 ) {
-			writeOutput("<script>
-                alert('Invalid username or password');
-                window.location.href='../pages/user/index.cfm';
-            </script>");
+			session.alert_status = "error";
+			session.alert_message = "Invalid username or password";
+			location("../pages/user/index.cfm");
 		} 
 		else {
 			session.id = login.id;
@@ -96,10 +95,9 @@ component {
 				location( "../pages/user/dashBoard.cfm", false );
 			}
 		} else {
-			writeOutput("<script>
-                alert('User already exist please login');
-                window.location.href='../pages/user/index.cfm';
-            </script>");
+			session.alert_status = "error";
+			session.alert_message = "User already exist please login";
+			location("../pages/user/index.cfm");
 		}
 	}
 
