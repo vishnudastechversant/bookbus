@@ -29,6 +29,7 @@
         </CFOUTPUT>
     </cfif>
     <cfset x = 1/>
+    <!-- pagination -->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <cfloop from="0" to="#history_count-1#" index="i" step="#recordperpage#">
