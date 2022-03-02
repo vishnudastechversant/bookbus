@@ -26,7 +26,7 @@ function handleLocation(loc,sec){
         }
         else{
             if(document.getElementById("to").value != ""){
-                document.getElementById("loc-list-to").innerHTML = html_cont;; 
+                document.getElementById("loc-list-to").innerHTML = html_cont;
             }
             else{
                 document.getElementById("loc-list-to").innerHTML = "";
