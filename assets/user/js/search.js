@@ -85,14 +85,47 @@ function handleSearch(event){
     var locf_id = document.getElementById("loc_id_from").value;
     var loct_id = document.getElementById("loc_id_to").value;
     var xhr     = new XMLHttpRequest();
-    xhr.open("post","../../cfc/search.cfc?method=Listfunction&loc_f="+locf_id+"&loc_t="+loct_id+"&date="+jdate);
+    xhr.open("post","../../cfc/search.cfc?method=Listfunction&loc_f="+locf_id+"&loc_t="+loct_id+"&date="+jdate);    
     xhr.send();
     xhr.onreadystatechange = function(){
         if(document.getElementById("banner")){
             document.getElementById("banner").style.display = "none";
         }
         document.getElementById("buses").style.display = "block";
-        document.getElementById("listing-div").innerHTML = this.responseText;
+        var data = JSON.parse(this.responseText);
+        var listing_div = document.getElementById("listing-div");
+        
+        if(data.STATUS == 'ok'){
+            document.getElementById("bus-message").innerHTML = data.MESSAGE;
+
+            data.LIST.forEach(bus => {
+                var arrival_time = new Date(bus.ARRIVAL_TIME);
+                var departure_time = new Date(bus.DEPARTURE_TIME);
+                
+                listing_div.innerHTML += `<form action="busSeats.cfm" method="post">
+                                            <input type="hidden" name="busId" value="${bus.BUS_ID}">
+                                            <input type="hidden" name="totalseats" value="${bus.NO_OF_SEATS}">
+                                            <input type="hidden" name="price" value="${bus.PRICE}">
+                                            <input type="hidden" name="routeId" value="${bus.ROUTE_ID}">
+                                            <input type="hidden" name="year" value="${data.selectedDate.YEAR}">
+                                            <input type="hidden" name="month" value="${data.selectedDate.MONTH}">
+                                            <input type="hidden" name="day" value="${data.selectedDate.DAY}">
+                                            <button class="btn bus-book">
+                                                <div class="bus-details">
+                                                    <p id="go-time">${arrival_time.toLocaleTimeString()}</p>
+                                                    <p id="bus-route">${bus.BUS_NAME}</p>
+                                                    <p id="bus-name">${bus.BUS_TYPE}</p>
+                                                    <p id="fare">Fare : ${bus.PRICE}</p>
+                                                    <p id="reach-time">${departure_time.toLocaleTimeString()}</p>
+                                                </div>
+                                            </button>
+                                        </form>`;
+            });        
+        }
+        else{
+            listing_div.innerHTML = "";
+            document.getElementById("bus-message").innerHTML = data.MESSAGE;            
+        }
     }    
 }
 
