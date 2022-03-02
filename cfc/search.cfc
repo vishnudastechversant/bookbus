@@ -11,8 +11,9 @@ component {
             return loclist; 
         }
         catch(Exception e){
-            data.status 	= 	'error';
-            data.message	=	e.message;
+            session.alert_status = 'error';
+            session.alert_message = '#e.message#';
+            location("../pages/user/index.cfm", "false");
         }
     }
 

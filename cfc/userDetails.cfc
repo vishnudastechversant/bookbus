@@ -19,8 +19,9 @@ component {
             return book_list;
         }
             catch (any e){
-			data.status = "error";
-			data.text = e.message;
+			session.alert_status = 'error';
+            session.alert_message = '#e.message#';
+            location("../pages/user/index.cfm", "false");
 		}
     }
 
@@ -36,8 +37,9 @@ component {
             return history_count.RecordCount;
         }
             catch (any e){
-			data.status = "error";
-			data.text = e.message;
+			session.alert_status = 'error';
+            session.alert_message = '#e.message#';
+            location("../pages/user/index.cfm", "false");
 		}
     }
 
@@ -61,8 +63,9 @@ component {
             return book_list;
         }
             catch (any e){
-			data.status = "error";
-			data.text = e.message;
+			session.alert_status = 'error';
+            session.alert_message = '#e.message#';
+            location("../pages/user/index.cfm", "false");
 		}
     }
 
@@ -78,8 +81,9 @@ component {
             return history_count.RecordCount;
         }
             catch (any e){
-			data.status = "error";
-			data.text = e.message;
+		    session.alert_status = 'error';
+            session.alert_message = '#e.message#';
+            location("../pages/user/index.cfm", "false");
 		}
     }
 
@@ -94,8 +98,9 @@ component {
             return user_detail;
         }
             catch (any e){
-			data.status = "error";
-			data.text = e.message;
+		    session.alert_status = 'error';
+            session.alert_message = '#e.message#';
+            location("../pages/user/index.cfm", "false");
 		}
     }
 
