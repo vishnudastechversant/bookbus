@@ -49,7 +49,7 @@
                                 <input type="number" name="routeId" id="routeId" value="#routeId#" hidden/>
                                 <input type="date" name="date" id="date" value="#date#" hidden/>
                                 <input type="hidden" name="csrftoken" value="#csrfToken#" />
-                                <button #structKeyExists(session, "id")? writeOutput('type="submit"'):writeOutput('type="button" data-bs-toggle="modal" data-bs-target="##loginModal"')# class="btn btn-danger col-md-6">Pay Now</button>
+                                <button #structKeyExists(session, "id")? 'type="submit"':'type="button" data-bs-toggle="modal" data-bs-target="##loginModal"'# class="btn btn-danger col-md-6">Pay Now</button>
                             </cfoutput>
                         </form>
                     </div>

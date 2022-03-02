@@ -27,5 +27,8 @@
     
     <script type="text/javascript" src="../../assets/user/js/login.js"></script> 
     <script type="text/javascript" src="../../assets/user/js/search.js"></script> 
+    <script type="text/javascript" src="../../assets/user/js/search.js"></script>
+    
+
 </body>
 </html>
