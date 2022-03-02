@@ -159,5 +159,6 @@
     <!--- for listing --->
     <div class="buses" id="buses">
         <span id="listing-div"></span>
+        <p id="bus-message"></p>
     </div>
     

@@ -52,11 +52,10 @@ component {
             }
             recordCount = searchList.recordCount;            
             if(recordCount == 0){
-                writeOutput('
-                    <div class="bus-details">
-                        <p id="bus-message">Sorry result not found</p>
-                    </div>
-                ');
+                data.status = 'error';
+                data.message = 'Sorry result not found';
+
+                return data;
             }
             else{
                 data.status 	= 	'ok';
@@ -75,7 +74,7 @@ component {
         catch(Exception e){
             data.status 	= 	'error';
             data.message	=	e.message;
-            writeOutput(serializeJSON(data));
+            return data;
         }
     }
 }
