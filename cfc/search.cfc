@@ -1,18 +1,19 @@
 component { 
-    remote function locFunction(required string loc,sec) returnFormat="JSON" {
+    remote function locFunction(required string loc,sec) returnformat="plain" {
         try {
-            loclist = queryExecute(
+            loclist= queryExecute(
                 "SELECT id, city FROM br_city 
                  WHERE city Like :location;", 
                 {
-                    location: { cfsqltype: "cf_sql_varchar", value: loc&'%' }
-                }
+                    location: { cfsqltype: "cf_sql_varchar", value: loc&'%' } 
+                },{returntype="json/array"}
             ); 
-            return loclist;
+            return loclist; 
         }
         catch(Exception e){
-            data.status 	= 	'error';
-            data.message	=	e.message;
+            session.alert_status = 'error';
+            session.alert_message = '#e.message#';
+            location("../pages/user/index.cfm", "false");
         }
     }
 
