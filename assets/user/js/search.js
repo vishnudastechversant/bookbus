@@ -86,13 +86,15 @@ function handleSearch(event){
     var locf_id = document.getElementById("loc_id_from").value;
     var loct_id = document.getElementById("loc_id_to").value;
     var xhr     = new XMLHttpRequest();
-    xhr.open("post","../../cfc/search.cfc?method=Listfunction&loc_f="+locf_id+"&loc_t="+loct_id+"&date="+jdate);
+    xhr.open("post","../../cfc/search.cfc?method=Listfunction&loc_f="+locf_id+"&loc_t="+loct_id+"&date="+jdate, true);    
     xhr.send();
     xhr.onreadystatechange = function(){
         if(document.getElementById("banner")){
             document.getElementById("banner").style.display = "none";
         }
         document.getElementById("buses").style.display = "block";
+        var data = this.responseText;
+        console.log(data);
         document.getElementById("listing-div").innerHTML = this.responseText;
     }    
 }
