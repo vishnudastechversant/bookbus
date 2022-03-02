@@ -95,9 +95,9 @@ function handleSearch(event){
         document.getElementById("buses").style.display = "block";
         var data = JSON.parse(this.responseText);
         var listing_div = document.getElementById("listing-div");
-        
+        console.dir(data);
         if(data.STATUS == 'ok'){
-            document.getElementById("bus-message").innerHTML = data.MESSAGE;
+            document.getElementById("bus-message").innerHTML = "";
 
             data.LIST.forEach(bus => {
                 var arrival_time = new Date(bus.ARRIVAL_TIME);
