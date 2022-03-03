@@ -72,6 +72,7 @@
             </cfif>
         </div>
     </div>  
+    
 <!---     alerts     --->
     <cfoutput>
         <cfif structKeyExists(session, 'alert_status') AND len(trim(session.alert_status))  GT 0 >

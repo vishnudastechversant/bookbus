@@ -59,7 +59,7 @@ component {
 		if ( recordCount == 0 ) {
 			session.alert_status = "error";
 			session.alert_message = "Invalid username or password";
-			location("../pages/user/index.cfm");
+			location("../pages/user/index.cfm", false);
 		} 
 		else {
 			session.id = login.id;
@@ -97,7 +97,7 @@ component {
 		} else {
 			session.alert_status = "error";
 			session.alert_message = "User already exist please login";
-			location("../pages/user/index.cfm");
+			location("../pages/user/index.cfm", false);
 		}
 	}
 
