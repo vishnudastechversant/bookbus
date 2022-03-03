@@ -9,7 +9,6 @@ function handleLocation(loc,sec){
         if(xhr.readyState == 4){
             if(xhr.status == 200){
                 var res = JSON.parse(xhr.responseText);
-                console.log(res);
                     for(i=0;i<res.length;i++){
                         var curr = res[i];
                             var html_cont = html_cont+"<li class=list-group-item onclick=listHandle("+curr['id']+",'"+curr['city']+"','"+sec+"')>"+curr['city']+" </li>";
@@ -92,9 +91,10 @@ function handleSearch(event){
             document.getElementById("banner").style.display = "none";
         }
         document.getElementById("buses").style.display = "block";
-        var data = JSON.parse(this.responseText);
+        var fetched_data = this.responseText;
+        var data = JSON.parse(fetched_data);
         var listing_div = document.getElementById("listing-div");
-        console.dir(data);
+        let listing_div_content = "";
         if(data.STATUS == 'ok'){
             document.getElementById("bus-message").innerHTML = "";
 
@@ -102,7 +102,7 @@ function handleSearch(event){
                 var arrival_time = new Date(bus.ARRIVAL_TIME);
                 var departure_time = new Date(bus.DEPARTURE_TIME);
                 
-                listing_div.innerHTML += `<form action="busSeats.cfm" method="post">
+                listing_div_content = listing_div_content + `<form action="busSeats.cfm" method="post">
                                             <input type="hidden" name="busId" value="${bus.BUS_ID}">
                                             <input type="hidden" name="totalseats" value="${bus.NO_OF_SEATS}">
                                             <input type="hidden" name="price" value="${bus.PRICE}">
@@ -123,9 +123,10 @@ function handleSearch(event){
             });        
         }
         else{
-            listing_div.innerHTML = "";
+            listing_div_content = "";
             document.getElementById("bus-message").innerHTML = data.MESSAGE;            
         }
+        listing_div.innerHTML = listing_div_content;
     }    
 }
 

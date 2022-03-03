@@ -45,7 +45,7 @@
                         <span class="error" id="date-error"></span>
                         <span id="jrn-date"> </span>
                     </div>
-                    <button type="button" class="btn search-btn" onClick="handleSearch(event); return false;">
+                    <button type="button" class="btn search-btn" onClick="handleSearch(event)">
                         <i class="fa fa-search"></i>
                     </button>
                 </form>
