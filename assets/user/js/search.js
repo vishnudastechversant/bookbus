@@ -102,7 +102,7 @@ function handleSearch(event){
                 var arrival_time = new Date(bus.ARRIVAL_TIME);
                 var departure_time = new Date(bus.DEPARTURE_TIME);
                 
-                listing_div_content = listing_div_content + `<form action="busSeats.cfm" method="post">
+                listing_div_content += `<form action="busSeats.cfm" method="post">
                                             <input type="hidden" name="busId" value="${bus.BUS_ID}">
                                             <input type="hidden" name="totalseats" value="${bus.NO_OF_SEATS}">
                                             <input type="hidden" name="price" value="${bus.PRICE}">
